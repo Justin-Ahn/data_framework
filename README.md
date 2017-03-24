@@ -1,2 +1,3 @@
 # hw5-handout
-hw5 handout for students, S17
+
+This repository is for the homework 5 team assignment.
