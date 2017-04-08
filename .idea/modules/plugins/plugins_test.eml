@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component LANGUAGE_LEVEL="JDK_1_8" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/../../../plugins/build/classes/test"/>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$/../../../plugins/src/test">
+		<testFolder url="file://$MODULE_DIR$/../../../plugins/src/test/java"/>
+		<testFolder url="file://$MODULE_DIR$/../../../plugins/src/test/resources"/>
+	</contentEntry>
+</component>
