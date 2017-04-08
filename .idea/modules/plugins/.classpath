@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="/plugins/src/test/java"/>
-	<classpathentry kind="src" path="/plugins/src/test/resources"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/plugins_main"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
