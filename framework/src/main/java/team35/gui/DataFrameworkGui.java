@@ -1,4 +1,4 @@
-package Team35.DataFramework.gui;
+package Team35.dataframework.gui;
 
 /**
  * Team 35's Data Visualization Framework GUI Implementation.

@@ -1,4 +1,4 @@
-package Team35.DataFramework.core;
+package Team35.dataframework.core;
 
 /**
  * Created by Justin on 4/8/2017.
