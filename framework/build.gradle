@@ -1,0 +1,44 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+
+test.testLogging { exceptionFormat "full"; events "failed", "passed", "skipped" }
+
+
+apply plugin: 'maven'
+
+group = 'cs15214'
+
+version = '0.5.1'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "https://github.com/CMU-15-214/hw5-team-35")
+        }
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'org.ow2.asm:asm:5.0.3'
+        forcedModules = ['org.ow2.asm:asm:5.0.3']
+    }
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile project(":..:framework")
+}
+
+buildscript{
+  repositories {
+    mavenCentral()
+  }
+}
+
+mainClassName = "Main"

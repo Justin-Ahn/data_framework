@@ -49,7 +49,6 @@ public class FrameworkGUI {
     //AnalysisPlugin currentAnalysisPlugin
 
 
-
     public FrameworkGUI() {
         frame = new JFrame(FRAME_TITLE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,8 +85,6 @@ public class FrameworkGUI {
         menuBar.add(dataPluginMenu);
         menuBar.add(visualizationPluginMenu);
         menuBar.add(analysisPluginMenu);
-
-
 
         frame.setJMenuBar(menuBar);
         frame.pack();
