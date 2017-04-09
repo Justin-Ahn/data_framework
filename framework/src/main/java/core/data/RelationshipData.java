@@ -10,6 +10,7 @@ import java.util.Set;
  * Created by Justin on 4/8/2017.
  */
 public class RelationshipData {
+
     private Map<SpecificCategory,Map<SpecificCategory,Double>> curRelationship;
 
     public RelationshipData(Set<SpecificCategory> keySet) {
@@ -37,5 +38,6 @@ public class RelationshipData {
         SpecificCategory sc2 = new SpecificCategory(type, name2);
         return curRelationship.get(sc1).get(sc2);
     }
+
 
 }
