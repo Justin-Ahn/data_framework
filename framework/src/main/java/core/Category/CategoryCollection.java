@@ -1,5 +1,7 @@
 package core.category;
 
+import core.data.RelationshipData;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.lang.IllegalArgumentException;
@@ -12,9 +14,11 @@ import java.util.HashSet;
  */
 public class CategoryCollection {
     private Map<SpecificCategory, Set<SpecificCategory>> allRelation;
+    private Map<String,RelationshipData> cacheRelationShipData;
 
     public CategoryCollection() {
         this.allRelation = new HashMap<SpecificCategory, Set<SpecificCategory>>();
+        this.cacheRelationShipData = new HashMap<String, RelationshipData>();
     }
 
     /**
@@ -54,11 +58,77 @@ public class CategoryCollection {
         this.allRelation.get(c2).add(c1);
     }
 
+    /**
+     * no modifier for testing purpose (package level access)
+     * @return
+     */
+    Map<SpecificCategory, Set<SpecificCategory>> getAllRelation() {
+        return this.allRelation;
+    }
 
+    public RelationshipData getRelationshipData(String node, String link) {
+        if(node.equals(link)) {
+            throw (new IllegalArgumentException("node and link should be different types"));
+        }
+        // if we computed the relationship before, we use the cached data
+        if (this.cacheRelationShipData.get(node+link) != null) {
+            return this.cacheRelationShipData.get(node+link);
+        }
 
+        // we first add all the keys
+        Set<SpecificCategory> curKeySet = new HashSet<SpecificCategory>();
+        for (SpecificCategory sc : this.allRelation.keySet()) {
+            if (sc.getType().equals(node)) {
+                curKeySet.add(sc);
+            }
+        }
+        RelationshipData curRelationship = new RelationshipData(curKeySet);
 
+        // we then compute and store the strength of the link
+        for (SpecificCategory sc1 : curKeySet) {
+            for (SpecificCategory sc2 : curKeySet) {
+                if (!sc1.equals(sc2)) {
+                    try {
+                        double sc1All = numTypeElem(this.allRelation.get(sc1),link);
+                        double sc2All = numTypeElem(this.allRelation.get(sc2),link);
+                        double common = numCommonTypeElem(this.allRelation.get(sc1), this.allRelation.get(sc2), link);
+                        if (sc1All + sc2All == 0.0) {
+                            throw new ArithmeticException();
+                        }
+                        double strength = (common * 2.0)/(sc1All+sc2All);
+                        curRelationship.addLink(sc1,sc2,strength);
+                    } catch(ArithmeticException ae) {
+                        curRelationship.addLink(sc1,sc2,0.0);
+                    }
 
+                }
+            }
+        }
 
+        // we cache the newly formed relationship
+        this.cacheRelationShipData.put(node+link, curRelationship);
+        
+        return curRelationship;
+    }
 
+    private double numTypeElem(Set<SpecificCategory> s, String targetType) {
+        double result = 0.0;
+        for (SpecificCategory sc : s) {
+            if (sc.getType().equals(targetType)) {
+                result = result + 1.0;
+            }
+        }
+        return result;
+    }
+
+    private double numCommonTypeElem(Set<SpecificCategory> s1, Set<SpecificCategory> s2, String targetType) {
+        double result = 0.0;
+        for (SpecificCategory sc1 : s1) {
+            if (sc1.getType().equals(targetType) && s2.contains(sc1)) {
+                result = result + 1.0;
+            }
+        }
+        return result;
+    }
 
 }
