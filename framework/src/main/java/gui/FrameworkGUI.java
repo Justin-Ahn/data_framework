@@ -13,11 +13,11 @@ public class FrameworkGUI {
     //The GUI's Frame
     private final JFrame frame;
 
-    //Menu to choose which Data Plugin to use.
+    //Menu to choose which Data plugin to use.
     private final JMenu dataPluginMenu;
-    //Menu to choose which Data Visualization Plugin to use.
+    //Menu to choose which Data Visualization plugin to use.
     private final JMenu visualizationPluginMenu;
-    //Menu to choose which Analysis Plugin to run.
+    //Menu to choose which Analysis plugin to run.
     private final JMenu analysisPluginMenu;
 
     //The Top Panel that wraps all other JPanels.
@@ -35,9 +35,9 @@ public class FrameworkGUI {
     private static final String FILE_MENU_TITLE = "File";
     private static final String FILE_MENU_NEW = "New Window";
     private static final String FILE_MENU_EXIT = "Exit";
-    private static final String MENU_SET_DATA = "Data Plugin";
-    private static final String MENU_SET_VISUALIZATION = "Visualization Plugin";
-    private static final String MENU_SET_ANALYSIS = "Analysis Plugin";
+    private static final String MENU_SET_DATA = "Data plugin";
+    private static final String MENU_SET_VISUALIZATION = "Visualization plugin";
+    private static final String MENU_SET_ANALYSIS = "Analysis plugin";
 
 
     //List <AnalysisPlugin>
@@ -92,6 +92,5 @@ public class FrameworkGUI {
         frame.setJMenuBar(menuBar);
         frame.pack();
         frame.setVisible(true);
-
     }
 }

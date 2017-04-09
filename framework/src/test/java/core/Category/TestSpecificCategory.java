@@ -1,13 +1,7 @@
-package core.Category;
+package core.category;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import core.Category.SpecificCategory;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**

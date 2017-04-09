@@ -1,8 +1,6 @@
-package core.Category;
+package core.category;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.lang.IllegalArgumentException;
 import java.util.Set;
