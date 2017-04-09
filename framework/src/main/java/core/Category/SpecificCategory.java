@@ -1,4 +1,4 @@
-package core.Category;
+package core.category;
 
 /**
  * Created by tianyugu on 4/8/17.
