@@ -1,6 +1,6 @@
 package core.data;
 
-import core.category.SpecificCategory;
+import core.category.DataCategory;
 
 import java.util.*;
 
@@ -13,45 +13,36 @@ import java.util.*;
  */
 public class AnalysisData {
     // the current relationship data
-    private RelationshipData curRelation;
-    // just a test
-    private String testMessage = null;
+    private RelationshipData relationData;
     // Ordered list of Nodes corresponding to Summation of strength of relationships pertaining to that Node.
-    private List<SpecificCategory> nodeStrengthRankList;
+    private List<DataCategory> nodeStrengthList;
 
     public AnalysisData(RelationshipData rd) {
-        this.curRelation = rd;
-    }
-
-    /**
-     * just a test
-     * @return
-     */
-    public String getTestMessage() {
-        if (this.testMessage != null) {
-            return testMessage;
-        } else {
-            this.testMessage = "this is a test";
-            return testMessage;
-        }
+        this.relationData = rd;
     }
 
     /**
      *
      * @return Ordered list of Nodes corresponding to Summation of strength of relationships pertaining to that Node.
      */
-    public List<SpecificCategory> getNodeStrengthRankList() {
-        if (this.nodeStrengthRankList != null) {
-            return new ArrayList<>(this.nodeStrengthRankList);
+    public List<DataCategory> getNodeStrengthList() {
+        if (this.nodeStrengthList != null) {
+            return new ArrayList<>(this.nodeStrengthList);
         } else {
-            List<SpecificCategory> nodeList =
-                    new ArrayList<SpecificCategory>(curRelation.getCurRelationshipMap().keySet());
-            NodeStrengthCmp<SpecificCategory> curCmp = new NodeStrengthCmp<>(curRelation.getCurRelationshipMap());
+            List<DataCategory> nodeList =
+                    new ArrayList<DataCategory>(relationData.getCurRelationshipMap().keySet());
+            NodeStrengthCmp<DataCategory> curCmp = new NodeStrengthCmp<>(relationData.getCurRelationshipMap());
             Collections.sort(nodeList, curCmp);
-            this.nodeStrengthRankList = nodeList;
-            return new ArrayList<>(this.nodeStrengthRankList);
+            this.nodeStrengthList = nodeList;
+            return new ArrayList<>(this.nodeStrengthList);
         }
     }
+
+    public List<DataCategory> getNodeConnectionList() {
+
+        return null;
+    }
+
 }
 
 /**

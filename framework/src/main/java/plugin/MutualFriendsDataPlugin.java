@@ -16,16 +16,10 @@ public class MutualFriendsDataPlugin implements DataPlugin{
     private File f;
     private Scanner scan;
 
-
-
     public MutualFriendsDataPlugin() {
         try {
             f = new File(FILE_LOCATION);
             scan = new Scanner(f);
-            while (scan.hasNext()) {
-                String s = scan.nextLine();
-
-            }
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -40,7 +34,22 @@ public class MutualFriendsDataPlugin implements DataPlugin{
     @Override
     public CategoryCollection getData() {
         CategoryCollection collection = new CategoryCollection();
-        collection.
-        return null;
+
+        while (scan.hasNext()) {
+            String s = scan.nextLine();
+            String [] sArray = s.split(",");
+            collection.addSpecificCategory("person", sArray[0]);
+            for (int i = 1; i < sArray.length; i++) {
+                collection.addSpecificCategory("friend", sArray[i]);
+                collection.addRelation("person", sArray[0], "friend", sArray[i]);
+            }
+        }
+        System.out.println(collection);
+        return collection;
+    }
+
+    public static void main(String [] args) {
+        MutualFriendsDataPlugin plugin = new MutualFriendsDataPlugin();
+        plugin.getData();
     }
 }

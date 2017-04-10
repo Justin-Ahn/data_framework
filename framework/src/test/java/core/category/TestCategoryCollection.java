@@ -17,12 +17,12 @@ public class TestCategoryCollection {
         cc.addSpecificCategory("A","A1");
         cc.addSpecificCategory("B","B1");
         cc.addRelation("A","A1","B","B1");
-        assertTrue(cc.getAllRelation().containsKey(new SpecificCategory("A","A1")));
-        assertTrue(cc.getAllRelation().containsKey(new SpecificCategory("A","A1")));
-        assertTrue(cc.getAllRelation().get(new SpecificCategory("A","A1")).contains
-                (new SpecificCategory("B","B1")));
-        assertTrue(cc.getAllRelation().get(new SpecificCategory("B","B1")).contains
-                (new SpecificCategory("A","A1")));
+        assertTrue(cc.getAllRelation().containsKey(new DataCategory("A","A1")));
+        assertTrue(cc.getAllRelation().containsKey(new DataCategory("A","A1")));
+        assertTrue(cc.getAllRelation().get(new DataCategory("A","A1")).contains
+                (new DataCategory("B","B1")));
+        assertTrue(cc.getAllRelation().get(new DataCategory("B","B1")).contains
+                (new DataCategory("A","A1")));
 
 
     }

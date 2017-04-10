@@ -1,6 +1,6 @@
 package core.data;
 
-import core.category.SpecificCategory;
+import core.category.DataCategory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,31 +11,30 @@ import java.util.Set;
  */
 public class RelationshipData {
 
-    private Map<SpecificCategory,Map<SpecificCategory,Double>> curRelationship;
+    private Map<DataCategory,Map<DataCategory,Double>> curRelationship;
 
-    public RelationshipData(Set<SpecificCategory> keySet) {
-        curRelationship = new HashMap<SpecificCategory,Map<SpecificCategory,Double>>();
-        for (SpecificCategory sc : keySet) {
-            curRelationship.put(sc, new HashMap<SpecificCategory, Double>());
+    public RelationshipData(Set<DataCategory> keySet) {
+        curRelationship = new HashMap<>();
+        for (DataCategory sc : keySet) {
+            curRelationship.put(sc, new HashMap<>());
         }
     }
 
-    public void addLink(SpecificCategory c1, SpecificCategory c2, Double strength) {
+    public void addLink(DataCategory c1, DataCategory c2, Double strength) {
         curRelationship.get(c1).put(c2,strength);
         curRelationship.get(c2).put(c1,strength);
     }
 
     /**
-     * return a copy of the current relationship map
-     * @return
+     * @return The copy of the current relationship map
      */
-    public Map<SpecificCategory,Map<SpecificCategory,Double>> getCurRelationshipMap() {
-        return new HashMap<SpecificCategory,Map<SpecificCategory, Double>>(curRelationship);
+    public Map<DataCategory,Map<DataCategory,Double>> getCurRelationshipMap() {
+        return new HashMap<>(curRelationship);
     }
 
     public double getStrength(String type, String name1, String name2) {
-        SpecificCategory sc1 = new SpecificCategory(type, name1);
-        SpecificCategory sc2 = new SpecificCategory(type, name2);
+        DataCategory sc1 = new DataCategory(type, name1);
+        DataCategory sc2 = new DataCategory(type, name2);
         return curRelationship.get(sc1).get(sc2);
     }
 
