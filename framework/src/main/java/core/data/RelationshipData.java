@@ -26,11 +26,11 @@ public class RelationshipData {
     }
 
     /**
-     * for test purpose
+     * return a copy of the current relationship map
      * @return
      */
-    public Map<SpecificCategory,Map<SpecificCategory,Double>> getCurRelationship() {
-        return curRelationship;
+    public Map<SpecificCategory,Map<SpecificCategory,Double>> getCurRelationshipMap() {
+        return new HashMap<SpecificCategory,Map<SpecificCategory, Double>>(curRelationship);
     }
 
     public double getStrength(String type, String name1, String name2) {
