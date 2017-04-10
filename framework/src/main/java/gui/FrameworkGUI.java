@@ -17,8 +17,6 @@ public class FrameworkGUI {
     private final JMenu dataPluginMenu;
     //Menu to choose which Data Visualization plugin to use.
     private final JMenu visualizationPluginMenu;
-    //Menu to choose which Analysis plugin to run.
-    private final JMenu analysisPluginMenu;
 
     //The Top Panel that wraps all other JPanels.
     private final JPanel topPanel;
@@ -37,7 +35,6 @@ public class FrameworkGUI {
     private static final String FILE_MENU_EXIT = "Exit";
     private static final String MENU_SET_DATA = "Data plugin";
     private static final String MENU_SET_VISUALIZATION = "Visualization plugin";
-    private static final String MENU_SET_ANALYSIS = "Analysis plugin";
 
 
     //List <AnalysisPlugin>
@@ -67,7 +64,6 @@ public class FrameworkGUI {
 
         dataPluginMenu = new JMenu(MENU_SET_DATA);
         visualizationPluginMenu = new JMenu(MENU_SET_VISUALIZATION);
-        analysisPluginMenu = new JMenu(MENU_SET_ANALYSIS);
 
         JMenuItem exitMenuItem = new JMenuItem(FILE_MENU_EXIT);
         exitMenuItem.addActionListener(event -> System.exit(0));
@@ -84,7 +80,7 @@ public class FrameworkGUI {
         menuBar.add(fileMenu);
         menuBar.add(dataPluginMenu);
         menuBar.add(visualizationPluginMenu);
-        menuBar.add(analysisPluginMenu);
+
 
         frame.setJMenuBar(menuBar);
         frame.pack();
