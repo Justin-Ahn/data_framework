@@ -3,6 +3,7 @@ package core.category;
 import static org.junit.Assert.*;
 
 import core.data.RelationshipData;
+import core.framework.DataVisualizationFramework;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -10,10 +11,11 @@ import org.junit.Test;
  * Created by tianyugu on 4/8/17.
  */
 public class TestCategoryCollection {
-
+/*
     @Test
     public void testCategoryCollection1() {
         CategoryCollection cc = new CategoryCollection();
+        DataVisualizationFramework core = new DataVisualizationFramework();
         cc.addSpecificCategory("A","A1");
         cc.addSpecificCategory("B","B1");
         cc.addRelation("A","A1","B","B1");
@@ -69,5 +71,5 @@ public class TestCategoryCollection {
 
 
 
-
+*/
 }

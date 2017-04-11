@@ -11,31 +11,31 @@ import java.util.Set;
  */
 public class RelationshipData {
 
-    private Map<DataCategory,Map<DataCategory,Double>> curRelationship;
+    private Map<DataCategory,Map<DataCategory,Double>> relationship;
 
     public RelationshipData(Set<DataCategory> keySet) {
-        curRelationship = new HashMap<>();
+        relationship = new HashMap<>();
         for (DataCategory sc : keySet) {
-            curRelationship.put(sc, new HashMap<>());
+            relationship.put(sc, new HashMap<>());
         }
     }
 
     public void addLink(DataCategory c1, DataCategory c2, Double strength) {
-        curRelationship.get(c1).put(c2,strength);
-        curRelationship.get(c2).put(c1,strength);
+        relationship.get(c1).put(c2,strength);
+        relationship.get(c2).put(c1,strength);
     }
 
     /**
      * @return The copy of the current relationship map
      */
-    public Map<DataCategory,Map<DataCategory,Double>> getCurRelationshipMap() {
-        return new HashMap<>(curRelationship);
+    public Map<DataCategory,Map<DataCategory,Double>> getRelationshipMap() {
+        return new HashMap<>(relationship);
     }
 
     public double getStrength(String type, String name1, String name2) {
         DataCategory sc1 = new DataCategory(type, name1);
         DataCategory sc2 = new DataCategory(type, name2);
-        return curRelationship.get(sc1).get(sc2);
+        return relationship.get(sc1).get(sc2);
     }
 
 

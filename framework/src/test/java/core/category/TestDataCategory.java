@@ -7,7 +7,7 @@ import org.junit.Test;
 /**
  * Created by tianyugu on 4/8/17.
  */
-public class TestSpecificCategory {
+public class TestDataCategory {
 
     @Test
     public void testSpecificCategory1(){
