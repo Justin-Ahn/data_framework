@@ -1,3 +1,4 @@
+import core.framework.DataVisualizationFramework;
 import gui.FrameworkGUI;
 
 import javax.swing.*;
@@ -11,6 +12,7 @@ public class Main {
     }
 
     private static void startFramework() {
-        FrameworkGUI gui = new FrameworkGUI();
+        DataVisualizationFramework core = new DataVisualizationFramework();
+        FrameworkGUI gui = new FrameworkGUI(core);
     }
 }

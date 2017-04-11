@@ -14,11 +14,11 @@ import java.util.HashSet;
  */
 public class CategoryCollection {
     private Map<DataCategory, Set<DataCategory>> allRelations;
-    private Map<String,RelationshipData> relationDataCache;
+
+    //Cache_enable?
 
     public CategoryCollection() {
         this.allRelations = new HashMap<>();
-        this.relationDataCache = new HashMap<>();
     }
 
     /**
@@ -28,7 +28,7 @@ public class CategoryCollection {
      * @param type the type of the category
      * @param name the name of the instance
      */
-    public void addSpecificCategory(String type, String name) {
+    public void addCategory(String type, String name) {
         DataCategory curCategory = new DataCategory(type, name);
         if (this.allRelations.containsKey(curCategory)) {
             /* do nothing */
@@ -59,8 +59,8 @@ public class CategoryCollection {
     }
 
     /**
-     * no modifier for testing purpose (package level access)
-     * @return
+     *
+     * @return A copy of the Map of Categories & each instance's ownership.
      */
     public Map<DataCategory, Set<DataCategory>> getAllRelations() {
         return new HashMap<>(this.allRelations);

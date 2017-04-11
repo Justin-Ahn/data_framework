@@ -38,9 +38,9 @@ public class MutualFriendsDataPlugin implements DataPlugin{
         while (scan.hasNext()) {
             String s = scan.nextLine();
             String [] sArray = s.split(",");
-            collection.addSpecificCategory("person", sArray[0]);
+            collection.addCategory("person", sArray[0]);
             for (int i = 1; i < sArray.length; i++) {
-                collection.addSpecificCategory("friend", sArray[i]);
+                collection.addCategory("friend", sArray[i]);
                 collection.addRelation("person", sArray[0], "friend", sArray[i]);
             }
         }

@@ -3,51 +3,39 @@ package core.framework;
 import core.category.CategoryCollection;
 import core.category.DataCategory;
 import core.data.AnalysisData;
+import core.comparator.NumRelationComparator;
+import core.comparator.RelationStrengthComparator;
 import core.data.RelationshipData;
 import core.plugin.DataPlugin;
 import core.plugin.VisualizationPlugin;
 
 import javax.swing.*;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Justin on 4/9/2017.
  */
 public class DataVisualizationFramework {
+    private FrameworkListener listener;
     private DataPlugin dataPlugin;
     private VisualizationPlugin visPlugin;
-    private String node;
-    private String link;
-    private CategoryCollection collection;
-    private RelationshipData relationData;
-    private AnalysisData analysisData;
-    private JPanel dataVisual;
+
+    //Implementing caching depends on category collection, node, and link. How to resolve?
+    //Also some data might not want caching because of real time things. Have cache_enable field?
+    private final Map<CategoryCollection, RelationshipData> relationCache;
+
+    //Also, this cache gets infinitely larger. Somehow make an LRU cache instead?
+    private final Map<RelationshipData, AnalysisData> analysisCache;
 
     public DataVisualizationFramework() {
+        relationCache = new HashMap<>();
+        analysisCache = new HashMap<>();
         dataPlugin = null;
         visPlugin = null;
-        node = null;
-        link = null;
-        collection = null;
-        relationData = null;
-        analysisData = null;
-        dataVisual = null;
     }
 
-    /**
-     * initialize the whole framework
-     */
-    public void initializeFramework() {
-        dataPlugin = null;
-        visPlugin = null;
-        node = null;
-        link = null;
-        collection = null;
-        relationData = null;
-        analysisData = null;
-        dataVisual = null;
+    public void setListener(FrameworkListener listener) {
+        this.listener = listener;
     }
 
     /**
@@ -57,7 +45,7 @@ public class DataVisualizationFramework {
      */
     public void registerDataPlugin(DataPlugin dp) {
         this.dataPlugin = dp;
-        setCollection();
+        listener.onNewDataPluginRegistered();
     }
 
     /**
@@ -67,77 +55,89 @@ public class DataVisualizationFramework {
      */
     public void registerVisualizationPlugin(VisualizationPlugin vp) {
         this.visPlugin = vp;
-    }
-
-    /**
-     * call the data plugin's method to get data in CategoryCollection form
-     * and store the data
-     * this method will be called after the data plugin is set
-     */
-    public void setCollection() {
-        this.collection = this.dataPlugin.getData();
-    }
-
-    /**
-     * select the category user would like to visualize and analyze as nodes
-     * @param node the category type that user would like to visualize and analyze as nodes
-     */
-    public void setNode(String node) {
-        this.node = node;
-    }
-
-    /**
-     * select the category user would like to use for calculating strength of relation between nodes
-     * @param link the category that will be used for calculating strength of relation
-     */
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    /**
-     * store the current relationship the user would like to visualize and analyze
-     * if the node and link have not been selected, this method will do nothing
-     * if the node and link are the same type, node and link will be set to null for reselecting
-     *
-     * this method will be called after node and link is set
-     */
-    public void setRelationData() {
-        if((this.node==null)||(this.link==null)) {
-            return;
-        }
-        else {
-            this.relationData = calculateRelationData(node, link);
-        }
-    }
-
-    /**
-     * store the AnalysisData so its method can be called by the visualization plugin later
-     *
-     * this method will be called after the relationData is set
-     */
-    public void setAnalysisData() {
-        this.analysisData = new AnalysisData(this.relationData);
-    }
-
-
-    /**
-     * set the current visualization panel
-     * this method will be called after everything else is done
-     */
-    public void setVisPanel() {
-        this.dataVisual =  this.visPlugin.getVisual(this.relationData,this.analysisData);
+        listener.onNewVisualPluginRegistered();
     }
 
     /**
      * get the current visualization panel
      * @return the visualization panel contained with all the data visualization plots and analysis
      */
-    public JPanel getdataVisual() {
-        return this.dataVisual;
+    public JPanel getDataVisual(String node, String link) {
+        if (dataPlugin.equals(null) || visPlugin.equals(null)) {
+            return null;
+        }
+
+        RelationshipData relationData = calculateRelationData(node, link);
+        AnalysisData analysisData = calculateAnalysisData(relationData);
+        return visPlugin.getVisual(relationData, analysisData);
     }
 
+    //Analysis Data Calculation methods below...
+    private AnalysisData calculateAnalysisData(RelationshipData relationshipData) {
+        if (analysisCache.containsKey(relationshipData)) {
+            return analysisCache.get(relationshipData);
+        }
+
+        AnalysisData analysisData = new AnalysisData(
+                calcNumRelationList(relationshipData),
+                calcAverageRelationStrength(relationshipData),
+                calcAverageNumRelations(relationshipData),
+                calcRelationStrengthList(relationshipData));
+
+        analysisCache.put(relationshipData, analysisData);
+        return analysisData;
+    }
+
+    private List<DataCategory> calcNumRelationList(RelationshipData relationshipData) {
+        Map<DataCategory, Map<DataCategory, Double>> relationMap = relationshipData.getRelationshipMap();
+        List<DataCategory> result = new ArrayList<>(relationMap.keySet());
+        Collections.sort(result, new NumRelationComparator(relationMap));
+        return result;
+    }
+
+    private double calcAverageRelationStrength(RelationshipData relationshipData) {
+        double sumRelationStrength = 0;
+        double numRelations = 0;
+        Map<DataCategory, Map<DataCategory, Double>> relationMap = relationshipData.getRelationshipMap();
+        for (DataCategory node : relationMap.keySet()) {
+            numRelations += relationMap.get(node).size();
+            Map<DataCategory, Double> linkedMap = relationMap.get(node);
+            for (DataCategory linkedNode : linkedMap.keySet()) {
+                sumRelationStrength += linkedMap.get(linkedNode);
+            }
+        }
+        return sumRelationStrength/numRelations;
+    }
+
+    private double calcAverageNumRelations(RelationshipData relationshipData) {
+        double numNodes = 0;
+        double numRelations = 0;
+        Map<DataCategory, Map<DataCategory, Double>> relationMap = relationshipData.getRelationshipMap();
+        for (DataCategory node : relationMap.keySet()) {
+            numNodes++;
+            numRelations += relationMap.get(node).size();
+        }
+        return numRelations/numNodes;
+    }
+
+    private double calcRelationPairList(RelationshipData relationshipData) {
+        //Todo
+        return 0;
+    }
+
+    private List<DataCategory> calcRelationStrengthList(RelationshipData relationshipData) {
+        Map<DataCategory, Map<DataCategory,Double>> map = relationshipData.getRelationshipMap();
+        List<DataCategory> nodeList = new ArrayList<>(map.keySet());
+        RelationStrengthComparator comparator = new RelationStrengthComparator(map);
+        Collections.sort(nodeList, comparator);
+        return nodeList;
+    }
+    //End of Analysis Data Calculation methods.
+
+
+    //Relationship Data Calculation methods below...
     private RelationshipData calculateRelationData(String node, String link) {
-        Map<DataCategory, Set<DataCategory>> allRelations = collection.getAllRelations();
+        Map<DataCategory, Set<DataCategory>> allRelations = dataPlugin.getData().getAllRelations();
         //node and link naming???
         if(node.equals(link)) {
             throw (new IllegalArgumentException("The node and link cannot be of the same type"));
@@ -160,8 +160,8 @@ public class DataVisualizationFramework {
                     double sc1All = numTypeElem(allRelations.get(sc1),link);
                     double sc2All = numTypeElem(allRelations.get(sc2),link);
                     double common = numCommonTypeElem(allRelations.get(sc1), allRelations.get(sc2), link);
-                    if (sc1All + sc2All == 0.0) {
-                        curRelationship.addLink(sc1,sc2,0.0);
+                    if (sc1All + sc2All == 0.0 || common == 0.0) {
+                        //Do nothing -> Nothing is added.
                     }
                     else {
                         double strength = (common * 2.0)/(sc1All+sc2All);
@@ -195,6 +195,7 @@ public class DataVisualizationFramework {
         }
         return result;
     }
+    //End of Relationship Data Calculation methods.
 
 
 
