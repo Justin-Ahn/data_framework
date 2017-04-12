@@ -15,7 +15,18 @@ import java.awt.event.ActionListener;
 
 
 /**
- * Created by Justin on 4/8/2017.
+ * The Framework's GUI.
+ * Usage:
+ * User must:
+ * 1) Select a DataPlugin
+ *     -In doing so the GUI will pull the data categories from the DataPlugin.
+ *     -The user will choose which data category should be a link and a node.
+ *     -Link cannot equal Node. (Will be greyed out)
+ * 2) Select a VisualizationPlugin
+ * 3) Run "Apply Plugins..." to view the results from the VisualizationPlugin.
+ *
+ * Note: Some Visualization Plugins and Data Plugins may take some time to load.
+ * Unable to use multithreading in time to still have a responsive GUI during the loading time, unfortunately.
  */
 public class FrameworkGUI implements FrameworkListener{
 
@@ -25,18 +36,23 @@ public class FrameworkGUI implements FrameworkListener{
     //The frame's top menuBar.
     private final JMenuBar menuBar;
 
+    //Menu that combines nodeMenu & linkMenu
     private final JMenu categoryMenu;
+    //Menu of Data Categories
     private final JMenu nodeMenu;
+    //Menu of Data Categories
     private final JMenu linkMenu;
     //Menu to choose general things
     private final JMenu fileMenu;
     //Menu to choose which Data plugin to use.
     private final JMenu dataPluginMenu;
+    //Button Groups of different MenuItems. Used for clearing selection & being able to only select 1 at a time.
     private final ButtonGroup dataPluginGroup;
     private final ButtonGroup visualPluginGroup;
     private final ButtonGroup nodeButtonGroup;
     private final ButtonGroup linkButtonGroup;
 
+    //To output a message if something goes wrong.
     private final JLabel messageLabel;
     //Menu to choose which Data Visualization plugin to use.
     private final JMenu visualizationPluginMenu;
@@ -48,7 +64,7 @@ public class FrameworkGUI implements FrameworkListener{
     private JPanel visualizationPanel;
     //The Panel with analysis.
     private JPanel analysisPanel;
-
+    //The framework core used by the GUI.
     private final DataVisualizationFramework framework;
 
     private static final String FRAME_TITLE = "Relationship Visualization Framework";
@@ -58,7 +74,7 @@ public class FrameworkGUI implements FrameworkListener{
     private static final String FILE_MENU_TITLE = "File";
     private static final String FILE_MENU_NEW = "New Window";
     private static final String FILE_MENU_EXIT = "Exit";
-    private static final String FILE_MENU_START = "Apply Plugins";
+    private static final String FILE_MENU_START = "Apply Plugins...";
     private static final String MENU_SET_DATA = "Data plugin";
     private static final String MENU_SET_VISUALIZATION = "Visualization plugin";
 

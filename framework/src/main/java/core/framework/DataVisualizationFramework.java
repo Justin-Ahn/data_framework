@@ -8,27 +8,23 @@ import core.comparator.RelationStrengthComparator;
 import core.data.RelationshipData;
 import core.plugin.DataPlugin;
 import core.plugin.VisualizationPlugin;
-import org.jsoup.nodes.Document;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
 /**
- * Created by Justin on 4/9/2017.
+ * The Main Framework Class. Deals with cross-communication between the two plugins via different data structures.
+ * DataPlugin --> CategoryCollection/CategoryManager/Data | Framework
+ * Framework ---> RelationshipData/AnalysisData           | VisualizationPlugin
  */
 public class DataVisualizationFramework {
     private FrameworkListener listener;
     private DataPlugin dPlugin;
     private VisualizationPlugin vPlugin;
     private CategoryCollection collection;
-    private String node;
-    private String link;
-
 
     private final Map<String, RelationshipData> relationCache;
-
     private final Map<RelationshipData, AnalysisData> analysisCache;
 
     public DataVisualizationFramework() {
@@ -44,9 +40,9 @@ public class DataVisualizationFramework {
     }
 
     /**
-     * register the data plugin
-     * @param dp the data plugin
-     * this method should be called at the start of the framework
+     * Registers the data plugin. Called only once per type of DataPlugin.
+     * This method should be called at the start of the framework lifecycle.
+     * @param dp The data plugin
      */
     public void registerDataPlugin(DataPlugin dp) {
         dp.onRegister();
@@ -54,20 +50,29 @@ public class DataVisualizationFramework {
     }
 
     /**
-     * register the visualization plugin
+     * Registers the visualization plugin. Called only once per type of VisualizationPlugin.
+     * This method should be called at the start of the framework lifecycle.
      * @param vp the visualization plugin
-     * this method should be called at the start of the framework
      */
     public void registerVisualizationPlugin(VisualizationPlugin vp) {
         vp.onRegister();
         listener.onVisualPluginRegistered(vp);
     }
 
+    /**
+     * Sets the framework's dataPlugin. The framework can only handle one plugin of each type at a time.
+     * The plugin's .getData() method will only be called once by the Framework.
+     * @param plugin The data plugin
+     */
     public void setDataPlugin(DataPlugin plugin) {
         this.dPlugin = plugin;
         this.collection = plugin.getData();
     }
 
+    /**
+     * Sets the framework's visualPlugin. The framework can only handle one plugin of each type at a time.
+     * @param plugin The visualization plugin
+     */
     public void setVisualPlugin(VisualizationPlugin plugin) {
         this.vPlugin = plugin;
     }
@@ -79,9 +84,12 @@ public class DataVisualizationFramework {
     public VisualizationPlugin getVisualPlugin() {
         return this.vPlugin;
     }
+
     /**
-     * get the current visualization panel
-     * @return the visualization panel contained with all the data visualization plots and analysis
+     * Calculates the RelationData and the AnalysisData based on the dataPlugin.
+     * Calls getVisual on the visualizationPlugin, giving it the aforementioned calculated RelationshipData and
+     * AnalysisData.
+     * @return The VisualizationPlugin's panel given respective inputs.
      */
     public JPanel getDataVisual(String node, String link) {
         if (!collection.getManager().contains(node)
@@ -94,7 +102,15 @@ public class DataVisualizationFramework {
         return vPlugin.getVisual(relationData, analysisData);
     }
 
-    //___________________________START OF ANALYSIS METHODS___________________________
+    //________________________________START OF ANALYSIS METHODS________________________________
+
+    /**
+     * Calcaultes the AnalysisData based on the RelationshipData. A Description of each type of
+     * method/data calculation is available on the class description of AnalysisData.
+     * @param plugin The DataPlugin (for cache enabling purposes)
+     * @param relationshipData The RelationshipData.
+     * @return The calculated, finished AnalysisData.
+     */
     private AnalysisData calculateAnalysisData(DataPlugin plugin, RelationshipData relationshipData) {
         if (plugin.cacheEnabled() && analysisCache.containsKey(relationshipData)) {
             return analysisCache.get(relationshipData);
@@ -181,10 +197,19 @@ public class DataVisualizationFramework {
         Collections.sort(nodeList, comparator);
         return nodeList;
     }
-    //___________________________END OF ANALYSIS METHODS___________________________
+    //________________________________END OF ANALYSIS METHODS________________________________
 
 
-    //___________________________START OF ANALYSIS METHODS___________________________
+    //________________________________START OF ANALYSIS METHODS________________________________
+
+    /**
+     * Calculates the RelationshipData based on an instance of Data owning different instances
+     * of Data that are in a different category.
+     * @param plugin The DataPlugin (for cache enabling purposes)
+     * @param node The category to set to "node" status. (Will be checked if it is a valid category by the Manager)
+     * @param link The category to set to "link" status. (Will be also checked.)
+     * @return The RelationshipData
+     */
     private RelationshipData calculateRelationData(DataPlugin plugin, String node, String link) {
         String hash = collection.getManager().getNodeLinkPluginHash(node, link);
         if (plugin.cacheEnabled() && relationCache.containsKey(hash)) {
@@ -251,7 +276,7 @@ public class DataVisualizationFramework {
         }
         return result;
     }
-    //___________________________END OF RELATIONSHIP METHODS___________________________
+    //________________________________END OF RELATIONSHIP METHODS________________________________
 
 
 

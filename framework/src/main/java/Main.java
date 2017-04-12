@@ -3,7 +3,6 @@ import core.plugin.DataPlugin;
 import core.plugin.VisualizationPlugin;
 import gui.FrameworkGUI;
 
-import javax.swing.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -11,7 +10,7 @@ import java.net.URLClassLoader;
 import java.util.*;
 
 /**
- * Created by Justin on 4/8/2017.
+ * The Main class that loads the plugins, creates the framework, and runs the GUI.
  */
 public class Main {
     private static URL[] findPluginJars() throws MalformedURLException {

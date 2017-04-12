@@ -12,7 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Justin on 4/11/2017.
+ * Calls WeatherUnderground's API to compare the past 7 days' weather data and to see if there's a relationship
+ * between the cities listed below.
+ * Comparison categories are: City, Temperature, and Weather type.
  */
 public class WeatherDataPlugin implements DataPlugin{
 
@@ -78,6 +80,8 @@ public class WeatherDataPlugin implements DataPlugin{
             }
             for (Element el : docMap.get(s).select("fahrenheit")) {
                 Data d;
+                //We'll bin the values, since we don't have enough data to use each individual
+                //temperature degree.
                 if (Integer.parseInt(el.text()) < 50) {
                     d = collection.addData("Temp", "<50");
                 }
@@ -112,10 +116,5 @@ public class WeatherDataPlugin implements DataPlugin{
             }
         }
         return collection;
-    }
-
-    public static void main(String [] args) {
-        WeatherDataPlugin plugin = new WeatherDataPlugin();
-        plugin.getData();
     }
 }

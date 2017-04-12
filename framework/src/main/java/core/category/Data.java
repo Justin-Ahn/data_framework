@@ -27,9 +27,8 @@ public class Data {
 
 
     /**
-     * 
-     * @param other
-     * @return
+     * @param other The other object that is being compared to this.
+     * @return Whether or not the other object is an instance of Data & the other object has the same name & category name.
      */
     @Override
     public boolean equals(Object other) {

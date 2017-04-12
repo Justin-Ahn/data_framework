@@ -6,11 +6,18 @@ import core.data.RelationshipData;
 import javax.swing.*;
 
 /**
- * Created by Justin on 4/8/2017.
+ * VisualizationPlugin's Interface.
  */
 public interface VisualizationPlugin {
 
+    /**
+     * @return The name of the framework. Must be concise.
+     */
     String getName();
+
+    /**
+     * Called when the framework is registered to the framework to do any initial setups.
+     */
     void onRegister();
 
     /**
@@ -19,6 +26,10 @@ public interface VisualizationPlugin {
     String getDescription();
 
     /**
+     * A JPanel that provides the visualization of the RelationshipData & AnalysisData given by
+     * DataPlugin -> Framework -> VisualizationPlugin.
+     * The Visualization could be of the RelationshipData, AnalysisData, both, or neither. Entirely dependent
+     * on the developer's desires. As long as its a JPanel, its acceptable.
      * @param relation The data structure that holds the information of nodes & strength of edges.
      * @param analysis The data structure that holds the result of the analysis from the Analysis Plugin.
      * @return The visualization of the data given.

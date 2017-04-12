@@ -20,7 +20,7 @@ import java.util.List;
 public class HistogramVisualizationPlugin implements VisualizationPlugin {
     @Override
     public String getName() {
-        return "number of connections histogram";
+        return "Histogram";
     }
 
     @Override

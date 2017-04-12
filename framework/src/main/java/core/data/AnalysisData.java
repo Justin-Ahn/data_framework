@@ -5,11 +5,17 @@ import core.category.Data;
 import java.util.*;
 
 /**
- * Created by Justin on 4/8/2017.
- */
-
-/**
- * the data structure for storing and computing result of data analysis
+ * The Data structure that holds all the results of the analysis of an instance of RelationshipData.
+ * Contains the following:
+ * numRelationList =>
+ * averageRelationStrength =>
+ * maxRelationStrength =>
+ * averageNumRelations =>
+ * relationStrengthList =>
+ * relationPair =>
+ *
+ * Further Analyses can be made by a Visualization plugin if needed, since the RelationshipData contains
+ * the entire mapping data structure.
  */
 public class AnalysisData {
     private final List<Data> numRelationsList;
@@ -31,6 +37,14 @@ public class AnalysisData {
         this.averageNumRelations = averageNumRelations;
         this.relationStrengthList = relationStrengthList;
         this.relationPair = relationPair;
+    }
+
+    public double getMaxRelationStrength() {
+        return maxRelationStrength;
+    }
+
+    public Map<Set<Data>, Double> getRelationPair() {
+        return relationPair;
     }
 
     public List<Data> getNumRelationsList() {
