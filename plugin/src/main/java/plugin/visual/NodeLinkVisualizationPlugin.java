@@ -89,7 +89,7 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
 
                 try{
                     e.addAttribute("ui.color",strength);
-                    e.setAttribute("layout.force",0.001);
+                    e.setAttribute("layout.force",0.5);
                 } catch (NullPointerException ne) {
                     /* do nothing since the edge has already been visited */
                 }
