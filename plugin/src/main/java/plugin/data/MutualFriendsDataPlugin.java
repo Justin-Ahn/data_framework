@@ -16,6 +16,21 @@ public class MutualFriendsDataPlugin implements DataPlugin{
     private File f;
     private Scanner scan;
 
+    @Override
+    public String getName() {
+        return "Mutual Friends List";
+    }
+
+    @Override
+    public boolean cacheEnabled() {
+        return true;
+    }
+
+    @Override
+    public void onRegister() {
+        /* Do Nothing */
+    }
+
     public MutualFriendsDataPlugin() {
         try {
             f = new File(FILE_LOCATION);

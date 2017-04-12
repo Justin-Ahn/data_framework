@@ -7,10 +7,7 @@ import core.plugin.DataPlugin;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-
-import javax.print.Doc;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +19,21 @@ public class WeatherDataPlugin implements DataPlugin{
     @Override
     public String getDescription() {
         return "A plugin that provides 3 categories of data: City, Temperature, and Weather Type.";
+    }
+
+    @Override
+    public String getName() {
+        return "City Weather";
+    }
+
+    @Override
+    public boolean cacheEnabled() {
+        return false;
+    }
+
+    @Override
+    public void onRegister() {
+        /* Do Nothing */
     }
 
     @Override

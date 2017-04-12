@@ -1,7 +1,7 @@
 package plugin;
 
 import core.category.CategoryCollection;
-import core.category.DataCategory;
+import core.category.Data;
 import core.data.AnalysisData;
 import core.data.RelationshipData;
 import core.plugin.VisualizationPlugin;
@@ -27,6 +27,16 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
     }
 
     @Override
+    public String getName() {
+        return "Node-Link";
+    }
+
+    @Override
+    public void onRegister() {
+        /* Do Nothing */
+    }
+
+    @Override
     public JPanel getVisual(RelationshipData relation, AnalysisData analysis) {
         Graph graph = new SingleGraph("nodeLinkGraph");
 
@@ -44,17 +54,17 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
         graph.addAttribute("ui.antialias");
         graph.addAttribute("ui.stylesheet",stylesheet);
 
-        Map<DataCategory,Map<DataCategory,Double>> relationshipMap = relation.getRelationshipMap();
+        Map<Data,Map<Data,Double>> relationshipMap = relation.getRelationshipMap();
 
-        for (Map.Entry<DataCategory,Map<DataCategory,Double>> entry : relationshipMap.entrySet()) {
-            DataCategory dc0 = entry.getKey();
-            Map<DataCategory,Double> dc1map = entry.getValue();
+        for (Map.Entry<Data,Map<Data,Double>> entry : relationshipMap.entrySet()) {
+            Data dc0 = entry.getKey();
+            Map<Data,Double> dc1map = entry.getValue();
 
             Node n0 = graph.addNode(dc0.toString());
             n0.setAttribute("ui.label",dc0.getName());
 
-            for (Map.Entry<DataCategory,Double> innerEntry : dc1map.entrySet()) {
-                DataCategory dc1 = innerEntry.getKey();
+            for (Map.Entry<Data,Double> innerEntry : dc1map.entrySet()) {
+                Data dc1 = innerEntry.getKey();
                 Double strength = innerEntry.getValue();
 
 
@@ -80,12 +90,12 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
 
     public static void main(String[] args) {
 
-        Set<DataCategory> keySet = new HashSet<DataCategory>();
+        Set<Data> keySet = new HashSet<Data>();
 
-        DataCategory a1 = new DataCategory("A","a1");
-        DataCategory a2 = new DataCategory("A","a2");
-        DataCategory a3 = new DataCategory("A","a3");
-        DataCategory a4 = new DataCategory("A","a4");
+        Data a1 = new Data("A","a1");
+        Data a2 = new Data("A","a2");
+        Data a3 = new Data("A","a3");
+        Data a4 = new Data("A","a4");
         keySet.add(a1);
         keySet.add(a2);
         keySet.add(a3);

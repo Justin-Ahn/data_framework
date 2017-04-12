@@ -36,6 +36,21 @@ public class MutualFriendsDataPlugin implements DataPlugin{
     }
 
     @Override
+    public boolean cacheEnabled() {
+        return true;
+    }
+
+    @Override
+    public String getName() {
+        return "Mutual Friends List";
+    }
+
+    @Override
+    public void onRegister() {
+        /* Do nothing */
+    }
+
+    @Override
     public CategoryCollection getData() {
         CategoryManager manager = new CategoryManager();
         CategoryCollection collection = new CategoryCollection(manager);
@@ -52,7 +67,6 @@ public class MutualFriendsDataPlugin implements DataPlugin{
                 collection.addRelation("person", sArray[0], "friend", sArray[i]);
             }
         }
-        System.out.println(collection);
         return collection;
     }
 
