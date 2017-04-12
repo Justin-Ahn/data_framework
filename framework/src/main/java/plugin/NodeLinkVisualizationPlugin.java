@@ -84,7 +84,6 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
         Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
         viewer.enableAutoLayout();
         ViewPanel viewPanel = viewer.addDefaultView(false);
-
         return viewPanel;
     }
 
