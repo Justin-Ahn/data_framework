@@ -1,6 +1,6 @@
 package core.comparator;
 
-import core.category.DataCategory;
+import core.category.Data;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -8,19 +8,19 @@ import java.util.Map;
 /**
  * Created by Justin on 4/11/2017.
  */
-public class RelationStrengthComparator implements Comparator<DataCategory> {
-    private Map<DataCategory,Map<DataCategory,Double>> map;
+public class RelationStrengthComparator implements Comparator<Data> {
+    private Map<Data,Map<Data,Double>> map;
 
-    public RelationStrengthComparator(Map<DataCategory,Map<DataCategory,Double>> map) {
+    public RelationStrengthComparator(Map<Data,Map<Data,Double>> map) {
         this.map = map;
     }
 
     @Override
-    public int compare(DataCategory o1, DataCategory o2) {
+    public int compare(Data o1, Data o2) {
         return Double.compare(getMapStrength(this.map.get(o1)), getMapStrength(this.map.get(o2)));
     }
 
-    private Double getMapStrength(Map<DataCategory,Double> mp) {
+    private Double getMapStrength(Map<Data,Double> mp) {
         Double result = 0.0;
         for (Double val : mp.values()) {
             result += val;

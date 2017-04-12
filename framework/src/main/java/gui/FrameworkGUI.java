@@ -2,14 +2,12 @@ package gui;
 
 import core.framework.DataVisualizationFramework;
 import core.framework.FrameworkListener;
-import sun.font.FontManagerFactory;
 
-import javax.imageio.ImageIO;
+
 import javax.swing.*;
-import javax.xml.crypto.Data;
+
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
+
 
 /**
  * Created by Justin on 4/8/2017.
@@ -59,7 +57,7 @@ public class FrameworkGUI implements FrameworkListener{
 
         frame = new JFrame(FRAME_TITLE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(1000, 1000));
+        frame.setMinimumSize(new Dimension(1000, 1000));
 
         JPanel emptyPanel = new JPanel();
         menuBar = new JMenuBar();
@@ -87,7 +85,7 @@ public class FrameworkGUI implements FrameworkListener{
 
         frame.add(topPanel);
         frame.setJMenuBar(menuBar);
-        frame.pack();
+        //frame.pack();
         frame.setVisible(true);
     }
 

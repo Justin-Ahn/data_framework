@@ -1,7 +1,7 @@
 package core.framework;
 
 import core.category.CategoryCollection;
-import core.category.DataCategory;
+import core.category.Data;
 import core.data.AnalysisData;
 import core.comparator.NumRelationComparator;
 import core.comparator.RelationStrengthComparator;
@@ -88,9 +88,9 @@ public class DataVisualizationFramework {
         return analysisData;
     }
 
-    private List<DataCategory> calcNumRelationList(RelationshipData relationshipData) {
-        Map<DataCategory, Map<DataCategory, Double>> relationMap = relationshipData.getRelationshipMap();
-        List<DataCategory> result = new ArrayList<>(relationMap.keySet());
+    private List<Data> calcNumRelationList(RelationshipData relationshipData) {
+        Map<Data, Map<Data, Double>> relationMap = relationshipData.getRelationshipMap();
+        List<Data> result = new ArrayList<>(relationMap.keySet());
         Collections.sort(result, new NumRelationComparator(relationMap));
         return result;
     }
@@ -98,11 +98,11 @@ public class DataVisualizationFramework {
     private double calcAverageRelationStrength(RelationshipData relationshipData) {
         double sumRelationStrength = 0;
         double numRelations = 0;
-        Map<DataCategory, Map<DataCategory, Double>> relationMap = relationshipData.getRelationshipMap();
-        for (DataCategory node : relationMap.keySet()) {
+        Map<Data, Map<Data, Double>> relationMap = relationshipData.getRelationshipMap();
+        for (Data node : relationMap.keySet()) {
             numRelations += relationMap.get(node).size();
-            Map<DataCategory, Double> linkedMap = relationMap.get(node);
-            for (DataCategory linkedNode : linkedMap.keySet()) {
+            Map<Data, Double> linkedMap = relationMap.get(node);
+            for (Data linkedNode : linkedMap.keySet()) {
                 sumRelationStrength += linkedMap.get(linkedNode);
             }
         }
@@ -112,8 +112,8 @@ public class DataVisualizationFramework {
     private double calcAverageNumRelations(RelationshipData relationshipData) {
         double numNodes = 0;
         double numRelations = 0;
-        Map<DataCategory, Map<DataCategory, Double>> relationMap = relationshipData.getRelationshipMap();
-        for (DataCategory node : relationMap.keySet()) {
+        Map<Data, Map<Data, Double>> relationMap = relationshipData.getRelationshipMap();
+        for (Data node : relationMap.keySet()) {
             numNodes++;
             numRelations += relationMap.get(node).size();
         }
@@ -125,9 +125,9 @@ public class DataVisualizationFramework {
         return 0;
     }
 
-    private List<DataCategory> calcRelationStrengthList(RelationshipData relationshipData) {
-        Map<DataCategory, Map<DataCategory,Double>> map = relationshipData.getRelationshipMap();
-        List<DataCategory> nodeList = new ArrayList<>(map.keySet());
+    private List<Data> calcRelationStrengthList(RelationshipData relationshipData) {
+        Map<Data, Map<Data,Double>> map = relationshipData.getRelationshipMap();
+        List<Data> nodeList = new ArrayList<>(map.keySet());
         RelationStrengthComparator comparator = new RelationStrengthComparator(map);
         Collections.sort(nodeList, comparator);
         return nodeList;
@@ -137,7 +137,7 @@ public class DataVisualizationFramework {
 
     //Relationship Data Calculation methods below...
     private RelationshipData calculateRelationData(String node, String link) {
-        Map<DataCategory, Set<DataCategory>> allRelations = dataPlugin.getData().getAllRelations();
+        Map<Data, Set<Data>> allRelations = dataPlugin.getData().getAllRelations();
         //node and link naming???
         if(node.equals(link)) {
             throw (new IllegalArgumentException("The node and link cannot be of the same type"));
@@ -145,17 +145,17 @@ public class DataVisualizationFramework {
         // if we computed the relationship before, we use the cached data
 
         // we first add all the keys
-        Set<DataCategory> curKeySet = new HashSet<DataCategory>();
-        for (DataCategory sc : allRelations.keySet()) {
-            if (sc.getType().equals(node)) {
+        Set<Data> curKeySet = new HashSet<Data>();
+        for (Data sc : allRelations.keySet()) {
+            if (sc.getCategory().equals(node)) {
                 curKeySet.add(sc);
             }
         }
         RelationshipData curRelationship = new RelationshipData(curKeySet);
 
         // we then compute and store the strength of the link
-        for (DataCategory sc1 : curKeySet) {
-            for (DataCategory sc2 : curKeySet) {
+        for (Data sc1 : curKeySet) {
+            for (Data sc2 : curKeySet) {
                 if (!sc1.equals(sc2)) {
                     double sc1All = numTypeElem(allRelations.get(sc1),link);
                     double sc2All = numTypeElem(allRelations.get(sc2),link);
@@ -176,20 +176,20 @@ public class DataVisualizationFramework {
         return curRelationship;
     }
 
-    private double numTypeElem(Set<DataCategory> s, String targetType) {
+    private double numTypeElem(Set<Data> s, String targetType) {
         double result = 0.0;
-        for (DataCategory sc : s) {
-            if (sc.getType().equals(targetType)) {
+        for (Data sc : s) {
+            if (sc.getCategory().equals(targetType)) {
                 result = result + 1.0;
             }
         }
         return result;
     }
 
-    private double numCommonTypeElem(Set<DataCategory> s1, Set<DataCategory> s2, String targetType) {
+    private double numCommonTypeElem(Set<Data> s1, Set<Data> s2, String targetType) {
         double result = 0.0;
-        for (DataCategory sc1 : s1) {
-            if (sc1.getType().equals(targetType) && s2.contains(sc1)) {
+        for (Data sc1 : s1) {
+            if (sc1.getCategory().equals(targetType) && s2.contains(sc1)) {
                 result = result + 1.0;
             }
         }

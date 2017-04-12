@@ -1,8 +1,7 @@
 package core.data;
 
-import core.category.DataCategory;
+import core.category.Data;
 
-import javax.xml.crypto.Data;
 import java.util.*;
 
 /**
@@ -13,22 +12,22 @@ import java.util.*;
  * the data structure for storing and computing result of data analysis
  */
 public class AnalysisData {
-    private final List<DataCategory> numRelationsList;
+    private final List<Data> numRelationsList;
     private final double averageRelationStrength;
     private final double averageNumRelations;
-    private final List<DataCategory> relationStrengthList;
+    private final List<Data> relationStrengthList;
 
-    public AnalysisData(List<DataCategory> numRelationsList,
+    public AnalysisData(List<Data> numRelationsList,
                         double averageRelationStrength,
                         double averageNumRelations,
-                        List<DataCategory> relationStrengthList) {
+                        List<Data> relationStrengthList) {
         this.numRelationsList = numRelationsList;
         this.averageRelationStrength = averageRelationStrength;
         this.averageNumRelations = averageNumRelations;
         this.relationStrengthList = relationStrengthList;
     }
 
-    public List<DataCategory> getNumRelationsList() {
+    public List<Data> getNumRelationsList() {
         return new ArrayList<>(numRelationsList);
     }
 
@@ -40,7 +39,7 @@ public class AnalysisData {
         return averageNumRelations;
     }
 
-    public List<DataCategory> getRelationStrengthList() {
+    public List<Data> getRelationStrengthList() {
         return new ArrayList<>(relationStrengthList);
     }
 

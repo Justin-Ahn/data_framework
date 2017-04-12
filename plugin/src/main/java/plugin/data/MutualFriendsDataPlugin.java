@@ -1,15 +1,11 @@
-package plugin;
+package plugin.data;
 
 import core.category.CategoryCollection;
 import core.category.CategoryManager;
-import core.category.Data;
 import core.plugin.DataPlugin;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 /**

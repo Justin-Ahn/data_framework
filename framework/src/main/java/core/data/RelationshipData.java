@@ -1,6 +1,6 @@
 package core.data;
 
-import core.category.DataCategory;
+import core.category.Data;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,16 +11,16 @@ import java.util.Set;
  */
 public class RelationshipData {
 
-    private Map<DataCategory,Map<DataCategory,Double>> relationship;
+    private Map<Data,Map<Data,Double>> relationship;
 
-    public RelationshipData(Set<DataCategory> keySet) {
+    public RelationshipData(Set<Data> keySet) {
         relationship = new HashMap<>();
-        for (DataCategory sc : keySet) {
+        for (Data sc : keySet) {
             relationship.put(sc, new HashMap<>());
         }
     }
 
-    public void addLink(DataCategory c1, DataCategory c2, Double strength) {
+    public void addLink(Data c1, Data c2, Double strength) {
         relationship.get(c1).put(c2,strength);
         relationship.get(c2).put(c1,strength);
     }
@@ -28,13 +28,13 @@ public class RelationshipData {
     /**
      * @return The copy of the current relationship map
      */
-    public Map<DataCategory,Map<DataCategory,Double>> getRelationshipMap() {
+    public Map<Data,Map<Data,Double>> getRelationshipMap() {
         return new HashMap<>(relationship);
     }
 
     public double getStrength(String type, String name1, String name2) {
-        DataCategory sc1 = new DataCategory(type, name1);
-        DataCategory sc2 = new DataCategory(type, name2);
+        Data sc1 = new Data(type, name1);
+        Data sc2 = new Data(type, name2);
         return relationship.get(sc1).get(sc2);
     }
 

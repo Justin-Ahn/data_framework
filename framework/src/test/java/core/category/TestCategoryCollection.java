@@ -19,12 +19,12 @@ public class TestCategoryCollection {
         cc.addSpecificCategory("A","A1");
         cc.addSpecificCategory("B","B1");
         cc.addRelation("A","A1","B","B1");
-        assertTrue(cc.getAllRelation().containsKey(new DataCategory("A","A1")));
-        assertTrue(cc.getAllRelation().containsKey(new DataCategory("A","A1")));
-        assertTrue(cc.getAllRelation().get(new DataCategory("A","A1")).contains
-                (new DataCategory("B","B1")));
-        assertTrue(cc.getAllRelation().get(new DataCategory("B","B1")).contains
-                (new DataCategory("A","A1")));
+        assertTrue(cc.getAllRelation().containsKey(new Data("A","A1")));
+        assertTrue(cc.getAllRelation().containsKey(new Data("A","A1")));
+        assertTrue(cc.getAllRelation().get(new Data("A","A1")).contains
+                (new Data("B","B1")));
+        assertTrue(cc.getAllRelation().get(new Data("B","B1")).contains
+                (new Data("A","A1")));
 
 
     }

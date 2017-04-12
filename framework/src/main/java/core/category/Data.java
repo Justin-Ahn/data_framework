@@ -3,17 +3,17 @@ package core.category;
 /**
  * Created by tianyugu on 4/8/17.
  */
-public class DataCategory {
-    private final String type;
+public class Data {
+    private final String category;
     private final String name;
 
     /**
      *
-     * @param type the type of the instance
+     * @param category the type of the instance
      * @param name the name of the instance
      */
-    public DataCategory(String type, String name) {
-        this.type = type;
+    public Data(String category, String name) {
+        this.category = category;
         this.name = name;
     }
 
@@ -21,8 +21,8 @@ public class DataCategory {
      *
      * @return The type of the instance
      */
-    public String getType() {
-        return this.type;
+    public String getCategory() {
+        return this.category;
     }
 
     /**
@@ -35,22 +35,22 @@ public class DataCategory {
 
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof DataCategory)) {
+        if (!(other instanceof Data)) {
             return false;
         } else {
-            DataCategory otherCategory = (DataCategory) other;
-            return this.getType().equals(otherCategory.getType()) && this.getName().equals(otherCategory.getName());
+            Data otherCategory = (Data)other;
+            return this.getCategory().equals(otherCategory.getCategory()) && this.getName().equals(otherCategory.getName());
         }
     }
 
     @Override
     public int hashCode() {
-        String hashable = this.type + this.name;
+        String hashable = this.category + this.name;
         return hashable.hashCode();
     }
 
     @Override
     public String toString() {
-        return "(Type: " + type + ", | Name: " + name+")";
+        return "(Category: " + category + ", | Name: " + name + ")";
     }
 }

@@ -11,12 +11,12 @@ public class TestDataCategory {
 
     @Test
     public void testSpecificCategory1(){
-        DataCategory c = new DataCategory("t1","n1");
-        assertEquals("t1",c.getType());
+        Data c = new Data("t1","n1");
+        assertEquals("t1",c.getCategory());
 
         assertEquals("n1",c.getName());
 
-        DataCategory d = new DataCategory("t1","n1");
+        Data d = new Data("t1","n1");
         assertTrue(c.equals(d));
 
     }

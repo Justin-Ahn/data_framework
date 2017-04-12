@@ -1,7 +1,5 @@
 package core.category;
 
-import core.data.RelationshipData;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.lang.IllegalArgumentException;
@@ -13,59 +11,89 @@ import java.util.HashSet;
  * Created by tianyugu on 4/8/17.
  */
 public class CategoryCollection {
-    private Map<DataCategory, Set<DataCategory>> allRelations;
+    private Map<Data, Set<Data>> allRelations;
+    private final CategoryManager manager;
 
     //Cache_enable?
 
-    public CategoryCollection() {
+    public CategoryCollection(CategoryManager manager) {
+        this.manager = manager;
         this.allRelations = new HashMap<>();
     }
 
     /**
-     * add one instance of a DataCategory specified by type and name to allRelations as key
-     * the associated value is set to be an empty Set<DataCategory>
+     * add one instance of a Data specified by type and name to allRelations as key
+     * the associated value is set to be an empty Set<Data>
      * do nothing if the instance already existed in allRelations
-     * @param type the type of the category
+     * @param category the type of the category
      * @param name the name of the instance
      */
-    public void addCategory(String type, String name) {
-        DataCategory curCategory = new DataCategory(type, name);
-        if (this.allRelations.containsKey(curCategory)) {
+    public Data addData(String category, String name) {
+        if (!manager.contains(category)) {
+            throw new IllegalArgumentException("The Manager doesn't know of this category!");
+        }
+
+        Data data = new Data(category, name);
+        if (this.allRelations.containsKey(data)) {
             /* do nothing */
         } else {
-            this.allRelations.put(curCategory, new HashSet<>());
+            this.allRelations.put(data, new HashSet<>());
         }
+        return data;
     }
 
     /**
      * build relationship between the category instance c1 specified by type1, name1
      * and the category instance c2 specified by type2, name2
      *
-     * @param type1 type of the first DataCategory instance
-     * @param name1 name of the first DataCategory instance
-     * @param type2 type of the second DataCategory instance
-     * @param name2 name of the second DataCategory instance
+     * @param category1 type of the first Data instance
+     * @param name1 name of the first Data instance
+     * @param category2 type of the second Data instance
+     * @param name2 name of the second Data instance
      * @throws IllegalArgumentException if type1 is equal to type2
      */
-    public void addRelation(String type1, String name1, String type2, String name2) {
-        DataCategory c1 = new DataCategory(type1, name1);
-        DataCategory c2 = new DataCategory(type2, name2);
-        if ((!this.allRelations.containsKey(c1)) || (!this.allRelations.containsKey(c2))) {
-            throw (new IllegalArgumentException
-                    ("the the category does not exist, please use addSpecificCategory first"));
+    public void addRelation(String category1, String name1, String category2, String name2) {
+        Data d1 = null;
+        Data d2 = null;
+        for (Data d : allRelations.keySet()) {
+            if (d.getCategory().equals(category1) && d.getName().equals(name1)) {
+                d1 = d;
+            }
+            else if (d.getCategory().equals(category2) && d.getName().equals(name2)) {
+                d2 = d;
+            }
         }
-        this.allRelations.get(c1).add(c2);
-        this.allRelations.get(c2).add(c1);
+        addRelation(d1, d2);
+    }
+
+    public boolean isConnected(Data d1, Data d2) {
+        return allRelations.get(d1).contains(d2);
+    }
+
+
+    public void addRelation(Data d1, Data d2) {
+        if (!manager.contains(d1.getCategory()) | !manager.contains(d2.getCategory())) {
+            throw new IllegalArgumentException("Your specified Categories are not registered to the manager!");
+        }
+        if (!allRelations.containsKey(d1) || !allRelations.containsKey(d2)) {
+            throw new IllegalArgumentException ("Specified data not found.");
+        }
+        this.allRelations.get(d1).add(d2);
+        this.allRelations.get(d2).add(d1);
     }
 
     /**
      *
      * @return A copy of the Map of Categories & each instance's ownership.
      */
-    public Map<DataCategory, Set<DataCategory>> getAllRelations() {
+    public Map<Data, Set<Data>> getAllRelations() {
         return new HashMap<>(this.allRelations);
     }
 
+    public void clear() {
+        allRelations.clear();
+        manager.clear();
+    }
 
     @Override
     public String toString() {
