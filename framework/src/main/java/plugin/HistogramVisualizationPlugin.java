@@ -15,10 +15,18 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-/**
- * Created by tianyugu on 4/12/17.
- */
+
 public class HistogramVisualizationPlugin implements VisualizationPlugin {
+    @Override
+    public String getName() {
+        return "number of connections histogram";
+    }
+
+    @Override
+    public void onRegister() {
+        /* do nothing */
+    }
+
     @Override
     public String getDescription() {
         return null;
@@ -38,12 +46,12 @@ public class HistogramVisualizationPlugin implements VisualizationPlugin {
         }
 
         CategoryChart chart =
-                new CategoryChartBuilder().title("number of links").xAxisTitle("data").yAxisTitle("instances vs number of connections").build();
+                new CategoryChartBuilder().title("number of links").xAxisTitle("data").yAxisTitle("number of connections").build();
 
         chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNE);
         chart.getStyler().setHasAnnotations(true);
 
-        chart.addSeries("number of connections",dl,numl);
+        chart.addSeries("instances vs number of connections",dl,numl);
 
         JPanel panel = new XChartPanel(chart);
         panel.validate();
@@ -77,6 +85,9 @@ public class HistogramVisualizationPlugin implements VisualizationPlugin {
         frame.setResizable(true);
         frame.setVisible(true);
     }
+
+
+
 
 
 }
