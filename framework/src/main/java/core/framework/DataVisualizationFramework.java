@@ -17,12 +17,14 @@ import java.util.*;
  */
 public class DataVisualizationFramework {
     private FrameworkListener listener;
-    private DataPlugin dataPlugin;
-    private VisualizationPlugin visPlugin;
+    private DataPlugin dPlugin;
+    private VisualizationPlugin vPlugin;
+    private String node;
+    private String link;
 
     //Implementing caching depends on category collection, node, and link. How to resolve?
     //Also some data might not want caching because of real time things. Have cache_enable field?
-    private final Map<CategoryCollection, RelationshipData> relationCache;
+    private final Map<String, RelationshipData> relationCache;
 
     //Also, this cache gets infinitely larger. Somehow make an LRU cache instead?
     private final Map<RelationshipData, AnalysisData> analysisCache;
@@ -30,8 +32,10 @@ public class DataVisualizationFramework {
     public DataVisualizationFramework() {
         relationCache = new HashMap<>();
         analysisCache = new HashMap<>();
-        dataPlugin = null;
-        visPlugin = null;
+        dPlugin = null;
+        vPlugin = null;
+        node = null;
+        link = null;
     }
 
     public void setListener(FrameworkListener listener) {
@@ -44,8 +48,8 @@ public class DataVisualizationFramework {
      * this method should be called at the start of the framework
      */
     public void registerDataPlugin(DataPlugin dp) {
-        this.dataPlugin = dp;
-        listener.onNewDataPluginRegistered();
+        dp.onRegister();
+        listener.onDataPluginRegistered(dp);
     }
 
     /**
@@ -54,27 +58,49 @@ public class DataVisualizationFramework {
      * this method should be called at the start of the framework
      */
     public void registerVisualizationPlugin(VisualizationPlugin vp) {
-        this.visPlugin = vp;
-        listener.onNewVisualPluginRegistered();
+        vp.onRegister();
+        listener.onVisualPluginRegistered(vp);
     }
 
+    public void setDataPlugin(DataPlugin plugin) {
+        this.dPlugin = plugin;
+    }
+
+    public void setVisualPlugin(VisualizationPlugin plugin) {
+        this.vPlugin = plugin;
+    }
+
+    public void setNode(String node) {
+        if (dPlugin != null && !dPlugin.getData().getManager().contains(node)) {
+            throw new IllegalArgumentException("The category isn't known by current plugin's manager!");
+        }
+        this.node = node;
+    }
+
+    public void setLink(String link) {
+        if (dPlugin != null && !dPlugin.getData().getManager().contains(node)) {
+            throw new IllegalArgumentException("The category isn't known by current plugin's manager!");
+        }
+        this.link = link;
+    }
     /**
      * get the current visualization panel
      * @return the visualization panel contained with all the data visualization plots and analysis
      */
-    public JPanel getDataVisual(String node, String link) {
-        if (dataPlugin.equals(null) || visPlugin.equals(null)) {
-            return null;
+    public JPanel getDataVisual() {
+        if (!dPlugin.getData().getManager().contains(node)
+                || !dPlugin.getData().getManager().contains(link)) {
+            throw new IllegalArgumentException("Node/Link aren't valid Data Categories!");
         }
 
-        RelationshipData relationData = calculateRelationData(node, link);
-        AnalysisData analysisData = calculateAnalysisData(relationData);
-        return visPlugin.getVisual(relationData, analysisData);
+        RelationshipData relationData = calculateRelationData(dPlugin, node, link);
+        AnalysisData analysisData = calculateAnalysisData(dPlugin, relationData);
+        return vPlugin.getVisual(relationData, analysisData);
     }
 
     //Analysis Data Calculation methods below...
-    private AnalysisData calculateAnalysisData(RelationshipData relationshipData) {
-        if (analysisCache.containsKey(relationshipData)) {
+    private AnalysisData calculateAnalysisData(DataPlugin plugin, RelationshipData relationshipData) {
+        if (plugin.cacheEnabled() && analysisCache.containsKey(relationshipData)) {
             return analysisCache.get(relationshipData);
         }
 
@@ -84,7 +110,9 @@ public class DataVisualizationFramework {
                 calcAverageNumRelations(relationshipData),
                 calcRelationStrengthList(relationshipData));
 
-        analysisCache.put(relationshipData, analysisData);
+        if (plugin.cacheEnabled()) {
+            analysisCache.put(relationshipData, analysisData);
+        }
         return analysisData;
     }
 
@@ -136,8 +164,13 @@ public class DataVisualizationFramework {
 
 
     //Relationship Data Calculation methods below...
-    private RelationshipData calculateRelationData(String node, String link) {
-        Map<Data, Set<Data>> allRelations = dataPlugin.getData().getAllRelations();
+    private RelationshipData calculateRelationData(DataPlugin plugin, String node, String link) {
+        String hash = plugin.getData().getManager().getNodeLinkPluginHash(node, link);
+        if (plugin.cacheEnabled() && relationCache.containsKey(hash)) {
+            return relationCache.get(hash);
+        }
+
+        Map<Data, Set<Data>> allRelations = plugin.getData().getAllRelations();
         //node and link naming???
         if(node.equals(link)) {
             throw (new IllegalArgumentException("The node and link cannot be of the same type"));
@@ -172,7 +205,9 @@ public class DataVisualizationFramework {
         }
 
         // we cache the newly formed relationship
-
+        if (plugin.cacheEnabled()) {
+            relationCache.put(plugin.getData().getManager().getNodeLinkPluginHash(node, link), curRelationship);
+        }
         return curRelationship;
     }
 

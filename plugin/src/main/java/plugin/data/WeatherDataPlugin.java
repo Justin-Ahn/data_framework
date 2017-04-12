@@ -17,6 +17,21 @@ import java.util.Map;
 public class WeatherDataPlugin implements DataPlugin{
 
     @Override
+    public String getName() {
+        return "City Weather Data";
+    }
+
+    @Override
+    public boolean cacheEnabled() {
+        return false;
+    }
+
+    @Override
+    public void onRegister() {
+        /* Do Nothing */
+    }
+
+    @Override
     public String getDescription() {
         return "A plugin that provides 3 categories of data: City, Temperature, and Weather Type.";
     }

@@ -100,5 +100,9 @@ public class CategoryCollection {
         return allRelations.toString();
     }
 
+    public CategoryManager getManager() {
+        return manager;
+    }
+
 
 }

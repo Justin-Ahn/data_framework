@@ -27,6 +27,16 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
     }
 
     @Override
+    public String getName() {
+        return "Node-Link";
+    }
+
+    @Override
+    public void onRegister() {
+        /* Do Nothing */
+    }
+
+    @Override
     public JPanel getVisual(RelationshipData relation, AnalysisData analysis) {
         Graph graph = new SingleGraph("nodeLinkGraph");
 

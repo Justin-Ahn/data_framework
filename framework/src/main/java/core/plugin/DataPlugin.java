@@ -6,6 +6,12 @@ import core.category.CategoryCollection;
  * Created by Justin on 4/8/2017.
  */
 public interface DataPlugin {
+
+    String getName();
+    boolean cacheEnabled();
+
+    void onRegister();
+
     /**
      * @return The description of the type of data the plugin will send to the framework.
      */

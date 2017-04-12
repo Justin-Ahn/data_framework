@@ -29,8 +29,16 @@ public class CategoryManager {
         categories.clear();
     }
 
+    public String getNodeLinkPluginHash(String node, String link) {
+        if (this.contains(node) && this.contains(link)) {
+            return node + link + this.toString();
+        }
+        else {
+            throw new IllegalArgumentException("Neither Node nor Link is a registered category for this Manager");
+        }
+    }
+
     public Set<String> getCategorySet() {
         return new HashSet<>(categories);
     }
-    //Register Category?
 }

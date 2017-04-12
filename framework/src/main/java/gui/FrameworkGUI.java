@@ -2,9 +2,12 @@ package gui;
 
 import core.framework.DataVisualizationFramework;
 import core.framework.FrameworkListener;
+import core.plugin.DataPlugin;
+import core.plugin.VisualizationPlugin;
 
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 
 import java.awt.*;
 
@@ -20,10 +23,19 @@ public class FrameworkGUI implements FrameworkListener{
     //The frame's top menuBar.
     private final JMenuBar menuBar;
 
+    private final JMenu categoryMenu;
+    private final JMenu nodeMenu;
+    private final JMenu linkMenu;
     //Menu to choose general things
     private final JMenu fileMenu;
     //Menu to choose which Data plugin to use.
     private final JMenu dataPluginMenu;
+    private final ButtonGroup dataPluginGroup;
+    private final ButtonGroup visualPluginGroup;
+    private final ButtonGroup nodeButtonGroup;
+    private final ButtonGroup linkButtonGroup;
+
+
     //Menu to choose which Data Visualization plugin to use.
     private final JMenu visualizationPluginMenu;
     //Button to switch between the analysis & visualization views.
@@ -31,10 +43,6 @@ public class FrameworkGUI implements FrameworkListener{
 
     //The Top Panel that wraps all other JPanels.
     private final JPanel topPanel;
-    //A Panel that displays information about the three current plugins that are running.
-    private JPanel currentPluginInfoPanel;
-    //A JLabel that displays the text fo the currentPluginInfoPanel.
-    private JLabel pluginInfoLabel;
 
     //The Panel from the Visualization plugin.
     private JPanel visualizationPanel;
@@ -44,10 +52,13 @@ public class FrameworkGUI implements FrameworkListener{
     private final DataVisualizationFramework framework;
 
     private static final String FRAME_TITLE = "Relationship Visualization Framework";
+    private static final String CATEGORY_MENU_TITLE = "Data Category";
+    private static final String NODE_MENU_TITLE = "Choose Node Category...";
+    private static final String LINK_MENU_TITLE = "Choose Link Category...";
     private static final String FILE_MENU_TITLE = "File";
     private static final String FILE_MENU_NEW = "New Window";
     private static final String FILE_MENU_EXIT = "Exit";
-
+    private static final String FILE_MENU_START = "Apply Plugins";
     private static final String MENU_SET_DATA = "Data plugin";
     private static final String MENU_SET_VISUALIZATION = "Visualization plugin";
 
@@ -65,12 +76,18 @@ public class FrameworkGUI implements FrameworkListener{
         analysisPanel = new JPanel();
         topPanel.add(emptyPanel);
 
-        currentPluginInfoPanel = new JPanel();
-        pluginInfoLabel = new JLabel();
-        currentPluginInfoPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        currentPluginInfoPanel.setPreferredSize(new Dimension(1000, 30));
+        categoryMenu = new JMenu(CATEGORY_MENU_TITLE);
+        nodeMenu = new JMenu(NODE_MENU_TITLE);
+        linkMenu = new JMenu(LINK_MENU_TITLE);
+        nodeButtonGroup = new ButtonGroup();
+        linkButtonGroup = new ButtonGroup();
+        categoryMenu.setEnabled(false);
+        categoryMenu.add(nodeMenu);
+        categoryMenu.add(linkMenu);
 
-        topPanel.add(currentPluginInfoPanel);
+        visualPluginGroup = new ButtonGroup();
+        dataPluginGroup = new ButtonGroup();
+
 
         //topPanel.add(dataVisualizationPanel);
         fileMenu = new JMenu(FILE_MENU_TITLE);
@@ -80,7 +97,7 @@ public class FrameworkGUI implements FrameworkListener{
         dataPluginMenu = new JMenu(MENU_SET_DATA);
         visualizationPluginMenu = new JMenu(MENU_SET_VISUALIZATION);
         addPluginMenus();
-
+        menuBar.add(categoryMenu);
         addViewSwitchButton();
 
         frame.add(topPanel);
@@ -90,18 +107,35 @@ public class FrameworkGUI implements FrameworkListener{
     }
 
     private void addPluginMenus() {
+        dataPluginMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        visualizationPluginMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        if (dataPluginMenu.isSelected()) {
+            dataPluginMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        }
+        if (visualizationPluginMenu.isSelected()) {
+            visualizationPluginMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        }
         menuBar.add(dataPluginMenu);
         menuBar.add(visualizationPluginMenu);
     }
 
     private void addFileMenu() {
         JMenuItem exitMenuItem = new JMenuItem(FILE_MENU_EXIT);
+        JMenuItem startMenuItem = new JMenuItem(FILE_MENU_START);
+        startMenuItem.addActionListener(event -> {
+            visualizationPanel = framework.getDataVisual();
+                });
         exitMenuItem.addActionListener(event -> System.exit(0));
         JMenuItem newFrameworkMenuItem = new JMenuItem(FILE_MENU_NEW);
 
         fileMenu.add(newFrameworkMenuItem);
+        fileMenu.add(startMenuItem);
         fileMenu.addSeparator();
         fileMenu.add(exitMenuItem);
+        fileMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        if (fileMenu.isSelected()) {
+            fileMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        }
 
         menuBar.add(fileMenu);
     }
@@ -140,12 +174,50 @@ public class FrameworkGUI implements FrameworkListener{
     }
 
     @Override
-    public void onNewVisualPluginRegistered() {
-
+    public void onVisualPluginRegistered(VisualizationPlugin visualPlugin) {
+        JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(visualPlugin.getName());
+        menuItem.setToolTipText(visualPlugin.getDescription());
+        menuItem.addActionListener(event -> {
+            framework.setVisualPlugin(visualPlugin);
+        });
+        visualPluginGroup.add(menuItem);
+        visualizationPluginMenu.add(menuItem);
     }
 
     @Override
-    public void onNewDataPluginRegistered() {
+    public void onDataPluginRegistered(DataPlugin dataPlugin) {
+        JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(dataPlugin.getName());
+        menuItem.setToolTipText(dataPlugin.getDescription());
+        menuItem.addActionListener(event -> {
+            framework.setDataPlugin(dataPlugin);
+            categoryMenu.setEnabled(true);
+            for (String s : dataPlugin.getData().getManager().getCategorySet()) {
+                JRadioButtonMenuItem node = new JRadioButtonMenuItem(s);
+                JRadioButtonMenuItem link = new JRadioButtonMenuItem(s);
 
+                node.addActionListener(e -> {
+                    framework.setNode(s);
+                    for (Component c : linkMenu.getComponents()) {
+                        c.setEnabled(true);
+                    }
+                    link.setEnabled(false);
+                });
+                nodeMenu.add(node);
+                nodeButtonGroup.add(node);
+
+                link.addActionListener(e -> {
+                    framework.setLink(s);
+                    for (Component c : nodeMenu.getComponents()) {
+                        c.setEnabled(true);
+                    }
+                    node.setEnabled(false);
+                });
+                linkMenu.add(link);
+                linkButtonGroup.add(link);
+
+            }
+        });
+        dataPluginGroup.add(menuItem);
+        dataPluginMenu.add(menuItem);
     }
 }
