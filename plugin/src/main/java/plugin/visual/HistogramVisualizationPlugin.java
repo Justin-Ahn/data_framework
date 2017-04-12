@@ -15,7 +15,8 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Created by tianyugu on 4/12/17.
+ * take in relationship data and analysis data
+ * plot the number of connections of each instance in a histogram
  */
 public class HistogramVisualizationPlugin implements VisualizationPlugin {
     @Override
@@ -33,6 +34,12 @@ public class HistogramVisualizationPlugin implements VisualizationPlugin {
         return "the number of connections plotted against the corresponding data entry";
     }
 
+    /**
+     *
+     * @param relation the relationship data to be visualized
+     * @param analysis the analysis data to be visualized
+     * @return JPanel instance with the figure inside
+     */
     @Override
     public JPanel getVisual(RelationshipData relation, AnalysisData analysis) {
         Map<Data, Map<Data, Double>> relationshipMap = relation.getRelationshipMap();

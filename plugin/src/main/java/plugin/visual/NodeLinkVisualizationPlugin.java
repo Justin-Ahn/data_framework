@@ -23,7 +23,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by tianyugu on 4/11/17.
+ * take in relationship data and analysis data and plot the relationship data
+ * in a node-link graph
  */
 public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
     @Override
@@ -31,6 +32,12 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
         return "Visualizing the relationship data with node-link graph";
     }
 
+    /**
+     *
+     * @param relationshipData the relationshipData to be visualized
+     * @param analysisData the analysisData to be visualized
+     * @return a JPanel with the plots inside
+     */
     @Override
     public JPanel getVisual(RelationshipData relationshipData, AnalysisData analysisData) {
         JPanel panel = new JPanel();
@@ -54,11 +61,15 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
     private JPanel getVisualNodeLink(RelationshipData relation, AnalysisData analysis) {
         Graph graph = new SingleGraph("nodeLinkGraph");
 
-        String stylesheet = "edge {\n" +
+        String stylesheet = "node {\n" +
+                "\tsize: 3px;\n" +
+                "\tfill-color: #777;\n" +
+                "}\n" +
+                "edge {\n" +
                 "\tshape: line;\n" +
                 "\tfill-mode: dyn-plain;\n" +
                 "\tfill-color: blue,green, red;\n" +
-                "\tsize: 3px;\n" +
+                "\tsize: 1px;\n" +
                 "}";
 
         graph.setStrict(false);
@@ -67,6 +78,7 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
 
         graph.addAttribute("ui.antialias");
         graph.addAttribute("ui.stylesheet",stylesheet);
+
 
         Map<Data,Map<Data,Double>> relationshipMap = relation.getRelationshipMap();
 
@@ -84,12 +96,13 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
 
                 Node n1 = graph.addNode(dc1.toString());
                 n1.setAttribute("ui.label",dc1.getName());
+                n1.setAttribute("layout.weight",2.0);
 
                 Edge e = graph.addEdge(dc0.toString()+dc1.toString(), dc0.toString(), dc1.toString());
 
                 try{
                     e.addAttribute("ui.color",strength);
-                    e.setAttribute("layout.force",0.5);
+                    e.setAttribute("layout.weight",2.0);
                 } catch (NullPointerException ne) {
                     /* do nothing since the edge has already been visited */
                 }
