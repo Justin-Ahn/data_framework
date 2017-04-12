@@ -7,12 +7,14 @@ import java.util.*;
 /**
  * The Data structure that holds all the results of the analysis of an instance of RelationshipData.
  * Contains the following:
- * numRelationList =>
- * averageRelationStrength =>
- * maxRelationStrength =>
- * averageNumRelations =>
- * relationStrengthList =>
- * relationPair =>
+ *
+ * numRelationList => A List sorted by the number of relations each Data has with others. Index @ 0 is the largest number.
+ * averageRelationStrength => The average Strength of Relationships of all the Data in the RelationshipData
+ * maxRelationStrength => The maximum RelationshipStrength of all the Data in RelationshipData.
+ * averageNumRelations => The average number of relationships per Data in RelationshipData
+ * relationStrengthList => A List sorted by the summation of each Data's relationship strengths. Index @ 0 is the largest.
+ * relationPair => A Pairing of all the relationships and their respective relationshipStrength. Just another way to
+ * organize the relationshipData.
  *
  * Further Analyses can be made by a Visualization plugin if needed, since the RelationshipData contains
  * the entire mapping data structure.

@@ -5,7 +5,6 @@ import core.framework.FrameworkListener;
 import core.plugin.DataPlugin;
 import core.plugin.VisualizationPlugin;
 
-
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
@@ -56,14 +55,10 @@ public class FrameworkGUI implements FrameworkListener{
     private final JLabel messageLabel;
     //Menu to choose which Data Visualization plugin to use.
     private final JMenu visualizationPluginMenu;
-    //Button to switch between the analysis & visualization views.
-    private JButton viewSwitchButton;
 
 
     //The Panel from the Visualization plugin.
     private JPanel visualizationPanel;
-    //The Panel with analysis.
-    private JPanel analysisPanel;
     //The framework core used by the GUI.
     private final DataVisualizationFramework framework;
 
@@ -83,11 +78,10 @@ public class FrameworkGUI implements FrameworkListener{
         framework.setListener(this);
 
         frame = new JFrame(FRAME_TITLE);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(1000, 1000));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_C LOSE);
+        frame.setMinimumSize(new Dimension(750, 750));
 
         menuBar = new JMenuBar();
-        analysisPanel = new JPanel();
         visualizationPanel = new JPanel();
 
         //Set as a gridlayout so that the added panel will span the visualizationPanel
@@ -121,8 +115,6 @@ public class FrameworkGUI implements FrameworkListener{
         JPanel messagePanel = new JPanel();
         messagePanel.add(messageLabel);
         menuBar.add(messagePanel);
-
-        addViewSwitchButton();
 
         frame.add(visualizationPanel);
         frame.setJMenuBar(menuBar);
@@ -178,7 +170,9 @@ public class FrameworkGUI implements FrameworkListener{
                 });
         exitMenuItem.addActionListener(event -> System.exit(0));
         JMenuItem newFrameworkMenuItem = new JMenuItem(FILE_MENU_NEW);
-
+        newFrameworkMenuItem.addActionListener(event -> {
+            )
+        });
         fileMenu.add(newFrameworkMenuItem);
         fileMenu.add(startMenuItem);
         fileMenu.addSeparator();
@@ -186,28 +180,6 @@ public class FrameworkGUI implements FrameworkListener{
         fileMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 
         menuBar.add(fileMenu);
-    }
-
-    private void addViewSwitchButton() {
-        try {
-            viewSwitchButton = new JButton(new ImageIcon("src/main/resources/reverse.png"));
-            viewSwitchButton.setBackground(Color.white);
-        } catch (Exception e) {
-            e.printStackTrace();
-            viewSwitchButton = new JButton("Switch View");
-        }
-        viewSwitchButton.setToolTipText("Switch View");
-        viewSwitchButton.addActionListener(event -> {
-
-        });
-
-        //To put viewSwitchButton on the very right of the MenuBar.
-
-        menuBar.add(viewSwitchButton);
-    }
-
-    private void updateAnalysisPanel() {
-        //do things
     }
 
     @Override
