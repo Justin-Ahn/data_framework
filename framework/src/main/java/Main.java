@@ -2,6 +2,7 @@ import core.framework.DataVisualizationFramework;
 import core.plugin.DataPlugin;
 import core.plugin.VisualizationPlugin;
 import gui.FrameworkGUI;
+import gui.GUIStarter;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -58,13 +59,9 @@ public class Main {
         URL[] jars = findPluginJars();
         List<DataPlugin> dataPlugins = loadDataPlugins(jars);
         List<VisualizationPlugin> visualPlugins = loadVisualPlugins(jars);
-        startFramework(dataPlugins, visualPlugins);
+        DataVisualizationFramework core = new DataVisualizationFramework();
+        GUIStarter starter = new GUIStarter(dataPlugins, visualPlugins);
+        starter.startFramework();
     }
 
-    private static void startFramework(List<DataPlugin> dataPlugins, List<VisualizationPlugin> visualPlugins) {
-        DataVisualizationFramework core = new DataVisualizationFramework();
-        FrameworkGUI gui = new FrameworkGUI(core);
-        dataPlugins.forEach(core::registerDataPlugin);
-        visualPlugins.forEach(core::registerVisualizationPlugin);
-    }
 }

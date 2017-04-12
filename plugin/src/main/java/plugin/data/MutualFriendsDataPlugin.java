@@ -36,13 +36,6 @@ public class MutualFriendsDataPlugin implements DataPlugin{
     }
 
     public MutualFriendsDataPlugin() {
-        try {
-            f = new File(FILE_LOCATION);
-            scan = new Scanner(f);
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -56,23 +49,31 @@ public class MutualFriendsDataPlugin implements DataPlugin{
      */
     @Override
     public CategoryCollection getData() {
+        try {
+            f = new File(FILE_LOCATION);
+            scan = new Scanner(f);
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         CategoryManager manager = new CategoryManager();
         CategoryCollection collection = new CategoryCollection(manager);
-        manager.registerCategory("Person");
-        manager.registerCategory("Friend");
+        manager.registerCategory("person");
+        manager.registerCategory("friend");
 
 
-        while (scan.hasNext()) {
+        while (scan.hasNext ()) {
             String s = scan.nextLine();
             String [] sArray = s.split(",");
-            collection.addData("Person", sArray[0]);
+            collection.addData("person", sArray[0]);
             for (int i = 1; i < sArray.length; i++) {
-                collection.addData("Friend", sArray[i]);
+                collection.addData("friend", sArray[i]);
                 //Each person in columns[1->n] are the person @ column[0]'s friend.
                 //So thus add a relation between those two people.
-                collection.addRelation("Person", sArray[0], "Friend", sArray[i]);
+                collection.addRelation("person", sArray[0], "friend", sArray[i]);
             }
         }
+        scan.close();
         return collection;
     }
 }

@@ -54,5 +54,10 @@ public class RelationshipData {
         return relationship.get(sc1).get(sc2);
     }
 
+    @Override
+    public String toString() {
+        return relationship.toString();
+    }
+
 
 }

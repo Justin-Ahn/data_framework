@@ -35,6 +35,7 @@ public class FrameworkGUI implements FrameworkListener{
     //The frame's top menuBar.
     private final JMenuBar menuBar;
 
+    private final GUIStarter starter;
     //Menu that combines nodeMenu & linkMenu
     private final JMenu categoryMenu;
     //Menu of Data Categories
@@ -73,10 +74,11 @@ public class FrameworkGUI implements FrameworkListener{
     private static final String MENU_SET_DATA = "Data plugin";
     private static final String MENU_SET_VISUALIZATION = "Visualization plugin";
 
-    public FrameworkGUI(DataVisualizationFramework framework) {
+    public FrameworkGUI(DataVisualizationFramework framework, GUIStarter starter) {
         this.framework = framework;
         framework.setListener(this);
 
+        this.starter = starter;
         frame = new JFrame(FRAME_TITLE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(750, 750));
@@ -171,7 +173,11 @@ public class FrameworkGUI implements FrameworkListener{
         exitMenuItem.addActionListener(event -> System.exit(0));
         JMenuItem newFrameworkMenuItem = new JMenuItem(FILE_MENU_NEW);
         newFrameworkMenuItem.addActionListener(event -> {
+<<<<<<< HEAD
 
+=======
+            starter.startFramework();
+>>>>>>> 19c8bb643e75537b9b48bab9a3849fd3e908aaa1
         });
         fileMenu.add(newFrameworkMenuItem);
         fileMenu.add(startMenuItem);
