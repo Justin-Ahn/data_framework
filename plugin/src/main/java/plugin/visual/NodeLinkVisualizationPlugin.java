@@ -69,7 +69,7 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
                 "\tshape: line;\n" +
                 "\tfill-mode: dyn-plain;\n" +
                 "\tfill-color: blue,green, red;\n" +
-                "\tsize: 1px;\n" +
+                "\tsize: 3px;\n" +
                 "}";
 
         graph.setStrict(false);

@@ -61,7 +61,6 @@ public class DataVisualizationFramework {
 
     /**
      * Sets the framework's dataPlugin. The framework can only handle one plugin of each type at a time.
-     * The plugin's .getData() method will only be called once by the Framework.
      * @param plugin The data plugin
      */
     public void setDataPlugin(DataPlugin plugin) {
@@ -99,6 +98,7 @@ public class DataVisualizationFramework {
 
         RelationshipData relationData = calculateRelationData(dPlugin, node, link);
         AnalysisData analysisData = calculateAnalysisData(dPlugin, relationData);
+        System.out.println(relationData);
         return vPlugin.getVisual(relationData, analysisData);
     }
 
