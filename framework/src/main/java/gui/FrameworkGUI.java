@@ -78,7 +78,7 @@ public class FrameworkGUI implements FrameworkListener{
         framework.setListener(this);
 
         frame = new JFrame(FRAME_TITLE);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_C LOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(750, 750));
 
         menuBar = new JMenuBar();
@@ -171,7 +171,7 @@ public class FrameworkGUI implements FrameworkListener{
         exitMenuItem.addActionListener(event -> System.exit(0));
         JMenuItem newFrameworkMenuItem = new JMenuItem(FILE_MENU_NEW);
         newFrameworkMenuItem.addActionListener(event -> {
-            )
+
         });
         fileMenu.add(newFrameworkMenuItem);
         fileMenu.add(startMenuItem);
