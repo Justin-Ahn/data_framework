@@ -51,7 +51,7 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
     }
 
 
-    public JPanel getVisualNodeLink(RelationshipData relation, AnalysisData analysis) {
+    private JPanel getVisualNodeLink(RelationshipData relation, AnalysisData analysis) {
         Graph graph = new SingleGraph("nodeLinkGraph");
 
         String stylesheet = "edge {\n" +
@@ -104,7 +104,7 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
         return viewPanel;
     }
 
-    public JPanel getAnalysisPanel(RelationshipData relationshipData, AnalysisData analysisData) {
+    private JPanel getAnalysisPanel(RelationshipData relationshipData, AnalysisData analysisData) {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1,2));
         panel.add(getStrengthDonutPanel(relationshipData,analysisData));
@@ -112,7 +112,7 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
         return panel;
     }
 
-    public JPanel getStrengthDonutPanel(RelationshipData relationshipData, AnalysisData analysisData) {
+    private JPanel getStrengthDonutPanel(RelationshipData relationshipData, AnalysisData analysisData) {
         org.knowm.xchart.PieChart chart = new PieChartBuilder().title("strength based").build();
 
         chart.getStyler().setLegendVisible(false);
@@ -138,7 +138,7 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
         return panel;
     }
 
-    public JPanel getNumberDonutPanel(RelationshipData relationshipData, AnalysisData analysisData) {
+    private JPanel getNumberDonutPanel(RelationshipData relationshipData, AnalysisData analysisData) {
         org.knowm.xchart.PieChart chart = new PieChartBuilder().title("quantity based").build();
 
         chart.getStyler().setLegendVisible(false);
