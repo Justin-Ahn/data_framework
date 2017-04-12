@@ -9,6 +9,10 @@ import java.util.HashSet;
 
 /**
  * The Class that compiles all the Data Categories & each Category's ownership into one data structure.
+ * allRelations' Key will be each instance of Data (across every Data category)
+ * allRelations' Value will be the set of all other instances of Data (other's category != this category),
+ * which denotes that this Data has ownership of all the other instances of Data.
+ * An arbitrary d1's ownership of an arbitrary d2 implies that d2 owns d1 as well.
  */
 public class CategoryCollection {
     //The Map of all the ownerships between each data category.

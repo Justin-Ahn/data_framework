@@ -6,7 +6,8 @@ import java.util.Comparator;
 import java.util.Map;
 
 /**
- * Created by Justin on 4/11/2017.
+ * A Helper Comparator class for the Framework when calculating an aspect of AnalysisData.
+ * Nothing important to see here...
  */
 public class RelationStrengthComparator implements Comparator<Data> {
     private Map<Data,Map<Data,Double>> map;
