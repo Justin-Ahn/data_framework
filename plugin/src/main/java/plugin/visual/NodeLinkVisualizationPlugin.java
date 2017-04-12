@@ -43,7 +43,7 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2,1));
         panel.add(getVisualNodeLink(relationshipData,analysisData));
-        panel.add(getAnalysisPanel(relationshipData,analysisData));
+//        panel.add(getAnalysisPanel(relationshipData,analysisData));
         return  panel;
     }
 
@@ -96,7 +96,7 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
 
                 Node n1 = graph.addNode(dc1.toString());
                 n1.setAttribute("ui.label",dc1.getName());
-                n1.setAttribute("layout.weight",2.0);
+//                n1.setAttribute("layout.weight",2.0);
 
                 Edge e = graph.addEdge(dc0.toString()+dc1.toString(), dc0.toString(), dc1.toString());
 
@@ -177,51 +177,51 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
 
 
 
-    public static void main(String[] args) {
-
-        Set<Data> keySet = new HashSet<Data>();
-
-        Data a1 = new Data("A","a1");
-        Data a2 = new Data("A","a2");
-        Data a3 = new Data("A","a3");
-        Data a4 = new Data("A","a4");
-        keySet.add(a1);
-        keySet.add(a2);
-        keySet.add(a3);
-        keySet.add(a4);
-
-
-        RelationshipData rd = new RelationshipData(keySet);
-        rd.addLink(a1,a2,1.0);
-        rd.addLink(a1,a3,0.2);
-
-
-        JFrame frame = new JFrame("in the plugin");
-        frame.setLayout(new BorderLayout());
-
-        NodeLinkVisualizationPlugin nv = new NodeLinkVisualizationPlugin();
-
-        JPanel graphPanel = nv.getVisual(rd,null);
-
-//        JPanel graphPanel = nv.getStrengthDonutPanel(rd,null);
-
-//        JPanel graphPanel = nv.getNumberDonutPanel(rd,null);
-
-//        JPanel graphPanel = nv.getAnalysisPanel(rd,null);
-
-        frame.add(graphPanel,BorderLayout.CENTER);
-
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        frame.setSize(400, 800);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-
-//        curFrame.pack();
-        frame.setResizable(true);
-        frame.setVisible(true);
-
-    }
+//    public static void main(String[] args) {
+//
+//        Set<Data> keySet = new HashSet<Data>();
+//
+//        Data a1 = new Data("A","a1");
+//        Data a2 = new Data("A","a2");
+//        Data a3 = new Data("A","a3");
+//        Data a4 = new Data("A","a4");
+//        keySet.add(a1);
+//        keySet.add(a2);
+//        keySet.add(a3);
+//        keySet.add(a4);
+//
+//
+//        RelationshipData rd = new RelationshipData(keySet);
+//        rd.addLink(a1,a2,1.0);
+//        rd.addLink(a1,a3,0.2);
+//
+//
+//        JFrame frame = new JFrame("in the plugin");
+//        frame.setLayout(new BorderLayout());
+//
+//        NodeLinkVisualizationPlugin nv = new NodeLinkVisualizationPlugin();
+//
+//        JPanel graphPanel = nv.getVisual(rd,null);
+//
+////        JPanel graphPanel = nv.getStrengthDonutPanel(rd,null);
+//
+////        JPanel graphPanel = nv.getNumberDonutPanel(rd,null);
+//
+////        JPanel graphPanel = nv.getAnalysisPanel(rd,null);
+//
+//        frame.add(graphPanel,BorderLayout.CENTER);
+//
+//        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//
+//        frame.setSize(400, 800);
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
+//
+////        curFrame.pack();
+//        frame.setResizable(true);
+//        frame.setVisible(true);
+//
+//    }
 }
 
 
