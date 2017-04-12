@@ -8,13 +8,12 @@ import java.util.HashSet;
 
 
 /**
- * Created by tianyugu on 4/8/17.
+ * The Class that compiles all the Data Categories & each Category's ownership into one data structure.
  */
 public class CategoryCollection {
+    //The Map of all the ownerships between each data category.
     private Map<Data, Set<Data>> allRelations;
     private final CategoryManager manager;
-
-    //Cache_enable?
 
     public CategoryCollection(CategoryManager manager) {
         this.manager = manager;
@@ -22,11 +21,11 @@ public class CategoryCollection {
     }
 
     /**
-     * add one instance of a Data specified by type and name to allRelations as key
-     * the associated value is set to be an empty Set<Data>
-     * do nothing if the instance already existed in allRelations
-     * @param category the type of the category
+     * Creates and Adds an instance of Data specified by category and name to the keySet of allRelations.
+     * User creates the Data object first with this method in order to connect different Data objects together.
+     * @param category the name of the category
      * @param name the name of the instance
+     * @return The created Data object that was added to allRelations
      */
     public Data addData(String category, String name) {
         if (!manager.contains(category)) {
@@ -43,8 +42,8 @@ public class CategoryCollection {
     }
 
     /**
-     * build relationship between the category instance c1 specified by type1, name1
-     * and the category instance c2 specified by type2, name2
+     * Builds the relationship between the data instance d1 specified by type1, name1
+     * and the data instance d2 specified by type2, name2
      *
      * @param category1 type of the first Data instance
      * @param name1 name of the first Data instance
@@ -66,11 +65,22 @@ public class CategoryCollection {
         addRelation(d1, d2);
     }
 
+    /**
+     * Checks the relationship map to see the connection between d1 and d2.
+     * @param d1 The first instance of Data that is being checked.
+     * @param d2 The second instance of Data that is being checked.
+     * @return d1 and d2 are connected (d1 owns d2, d2 owns d1).
+     */
     public boolean isConnected(Data d1, Data d2) {
         return allRelations.get(d1).contains(d2);
     }
 
 
+    /**
+     *
+     * @param d1
+     * @param d2
+     */
     public void addRelation(Data d1, Data d2) {
         if (!manager.contains(d1.getCategory()) | !manager.contains(d2.getCategory())) {
             throw new IllegalArgumentException("Your specified Categories are not registered to the manager!");
@@ -83,16 +93,25 @@ public class CategoryCollection {
     }
 
     /**
-     *
      * @return A copy of the Map of Categories & each instance's ownership.
      */
     public Map<Data, Set<Data>> getAllRelations() {
         return new HashMap<>(this.allRelations);
     }
 
+    /**
+     * Clears the data structure. Making it like new.
+     */
     public void clear() {
         allRelations.clear();
         manager.clear();
+    }
+
+    /**
+     * @return the Collection's Category Manager.
+     */
+    public CategoryManager getManager() {
+        return manager;
     }
 
     @Override
@@ -100,9 +119,6 @@ public class CategoryCollection {
         return allRelations.toString();
     }
 
-    public CategoryManager getManager() {
-        return manager;
-    }
 
 
 }

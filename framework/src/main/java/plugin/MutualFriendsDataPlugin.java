@@ -2,14 +2,10 @@ package plugin;
 
 import core.category.CategoryCollection;
 import core.category.CategoryManager;
-import core.category.Data;
 import core.plugin.DataPlugin;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -20,15 +16,6 @@ public class MutualFriendsDataPlugin implements DataPlugin{
     private File f;
     private Scanner scan;
 
-    public MutualFriendsDataPlugin() {
-        try {
-            f = new File(FILE_LOCATION);
-            scan = new Scanner(f);
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public String getDescription() {
@@ -52,6 +39,14 @@ public class MutualFriendsDataPlugin implements DataPlugin{
 
     @Override
     public CategoryCollection getData() {
+        try {
+            f = new File(FILE_LOCATION);
+            scan = new Scanner(f);
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         CategoryManager manager = new CategoryManager();
         CategoryCollection collection = new CategoryCollection(manager);
         manager.registerCategory("person");

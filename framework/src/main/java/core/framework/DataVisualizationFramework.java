@@ -8,9 +8,12 @@ import core.comparator.RelationStrengthComparator;
 import core.data.RelationshipData;
 import core.plugin.DataPlugin;
 import core.plugin.VisualizationPlugin;
+import org.jsoup.nodes.Document;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by Justin on 4/9/2017.
@@ -19,14 +22,13 @@ public class DataVisualizationFramework {
     private FrameworkListener listener;
     private DataPlugin dPlugin;
     private VisualizationPlugin vPlugin;
+    private CategoryCollection collection;
     private String node;
     private String link;
 
-    //Implementing caching depends on category collection, node, and link. How to resolve?
-    //Also some data might not want caching because of real time things. Have cache_enable field?
+
     private final Map<String, RelationshipData> relationCache;
 
-    //Also, this cache gets infinitely larger. Somehow make an LRU cache instead?
     private final Map<RelationshipData, AnalysisData> analysisCache;
 
     public DataVisualizationFramework() {
@@ -34,8 +36,7 @@ public class DataVisualizationFramework {
         analysisCache = new HashMap<>();
         dPlugin = null;
         vPlugin = null;
-        node = null;
-        link = null;
+        collection = null;
     }
 
     public void setListener(FrameworkListener listener) {
@@ -64,32 +65,27 @@ public class DataVisualizationFramework {
 
     public void setDataPlugin(DataPlugin plugin) {
         this.dPlugin = plugin;
+        this.collection = plugin.getData();
     }
 
     public void setVisualPlugin(VisualizationPlugin plugin) {
         this.vPlugin = plugin;
     }
 
-    public void setNode(String node) {
-        if (dPlugin != null && !dPlugin.getData().getManager().contains(node)) {
-            throw new IllegalArgumentException("The category isn't known by current plugin's manager!");
-        }
-        this.node = node;
+    public DataPlugin getDataPlugin() {
+        return this.dPlugin;
     }
 
-    public void setLink(String link) {
-        if (dPlugin != null && !dPlugin.getData().getManager().contains(node)) {
-            throw new IllegalArgumentException("The category isn't known by current plugin's manager!");
-        }
-        this.link = link;
+    public VisualizationPlugin getVisualPlugin() {
+        return this.vPlugin;
     }
     /**
      * get the current visualization panel
      * @return the visualization panel contained with all the data visualization plots and analysis
      */
-    public JPanel getDataVisual() {
-        if (!dPlugin.getData().getManager().contains(node)
-                || !dPlugin.getData().getManager().contains(link)) {
+    public JPanel getDataVisual(String node, String link) {
+        if (!collection.getManager().contains(node)
+                || !collection.getManager().contains(link)) {
             throw new IllegalArgumentException("Node/Link aren't valid Data Categories!");
         }
 
@@ -98,7 +94,7 @@ public class DataVisualizationFramework {
         return vPlugin.getVisual(relationData, analysisData);
     }
 
-    //Analysis Data Calculation methods below...
+    //___________________________START OF ANALYSIS METHODS___________________________
     private AnalysisData calculateAnalysisData(DataPlugin plugin, RelationshipData relationshipData) {
         if (plugin.cacheEnabled() && analysisCache.containsKey(relationshipData)) {
             return analysisCache.get(relationshipData);
@@ -107,8 +103,10 @@ public class DataVisualizationFramework {
         AnalysisData analysisData = new AnalysisData(
                 calcNumRelationList(relationshipData),
                 calcAverageRelationStrength(relationshipData),
+                calcMaxRelationStrength(relationshipData),
                 calcAverageNumRelations(relationshipData),
-                calcRelationStrengthList(relationshipData));
+                calcRelationStrengthList(relationshipData),
+                calcRelationPairMap(relationshipData));
 
         if (plugin.cacheEnabled()) {
             analysisCache.put(relationshipData, analysisData);
@@ -137,6 +135,20 @@ public class DataVisualizationFramework {
         return sumRelationStrength/numRelations;
     }
 
+    private double calcMaxRelationStrength(RelationshipData relationshipData) {
+        double maxRelationStrength = 0;
+        Map<Data, Map<Data, Double>> relationMap = relationshipData.getRelationshipMap();
+        for (Data node : relationMap.keySet()) {
+            Map<Data, Double> linkedMap = relationMap.get(node);
+            for (Data linkedNode : linkedMap.keySet()) {
+                if (maxRelationStrength < relationMap.get(node).get(linkedNode)) {
+                    maxRelationStrength = relationMap.get(node).get(linkedNode);
+                }
+            }
+        }
+        return maxRelationStrength;
+    }
+
     private double calcAverageNumRelations(RelationshipData relationshipData) {
         double numNodes = 0;
         double numRelations = 0;
@@ -148,9 +160,18 @@ public class DataVisualizationFramework {
         return numRelations/numNodes;
     }
 
-    private double calcRelationPairList(RelationshipData relationshipData) {
-        //Todo
-        return 0;
+    private Map<Set<Data>, Double> calcRelationPairMap(RelationshipData relationshipData) {
+        Map<Data,Map<Data,Double>> map = relationshipData.getRelationshipMap();
+        Map<Set<Data> ,Double> result = new HashMap<>();
+        for (Data node : map.keySet()) {
+            for (Data linkedNode : map.get(node).keySet()) {
+                Set<Data> set = new HashSet<>();
+                set.add(node);
+                set.add(linkedNode);
+                result.put(set, map.get(node).get(linkedNode));
+            }
+        }
+        return result;
     }
 
     private List<Data> calcRelationStrengthList(RelationshipData relationshipData) {
@@ -160,20 +181,20 @@ public class DataVisualizationFramework {
         Collections.sort(nodeList, comparator);
         return nodeList;
     }
-    //End of Analysis Data Calculation methods.
+    //___________________________END OF ANALYSIS METHODS___________________________
 
 
-    //Relationship Data Calculation methods below...
+    //___________________________START OF ANALYSIS METHODS___________________________
     private RelationshipData calculateRelationData(DataPlugin plugin, String node, String link) {
-        String hash = plugin.getData().getManager().getNodeLinkPluginHash(node, link);
+        String hash = collection.getManager().getNodeLinkPluginHash(node, link);
         if (plugin.cacheEnabled() && relationCache.containsKey(hash)) {
             return relationCache.get(hash);
         }
 
-        Map<Data, Set<Data>> allRelations = plugin.getData().getAllRelations();
+        Map<Data, Set<Data>> allRelations = collection.getAllRelations();
         //node and link naming???
-        if(node.equals(link)) {
-            throw (new IllegalArgumentException("The node and link cannot be of the same type"));
+        if (node.equals(link)) {
+            throw (new IllegalArgumentException("The Node and Link cannot be of the same type!"));
         }
         // if we computed the relationship before, we use the cached data
 
@@ -206,7 +227,7 @@ public class DataVisualizationFramework {
 
         // we cache the newly formed relationship
         if (plugin.cacheEnabled()) {
-            relationCache.put(plugin.getData().getManager().getNodeLinkPluginHash(node, link), curRelationship);
+            relationCache.put(collection.getManager().getNodeLinkPluginHash(node, link), curRelationship);
         }
         return curRelationship;
     }
@@ -230,7 +251,7 @@ public class DataVisualizationFramework {
         }
         return result;
     }
-    //End of Relationship Data Calculation methods.
+    //___________________________END OF RELATIONSHIP METHODS___________________________
 
 
 

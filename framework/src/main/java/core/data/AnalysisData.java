@@ -14,17 +14,23 @@ import java.util.*;
 public class AnalysisData {
     private final List<Data> numRelationsList;
     private final double averageRelationStrength;
+    private final double maxRelationStrength;
     private final double averageNumRelations;
     private final List<Data> relationStrengthList;
+    private final Map<Set<Data>, Double> relationPair;
 
     public AnalysisData(List<Data> numRelationsList,
                         double averageRelationStrength,
+                        double maxRelationStrength,
                         double averageNumRelations,
-                        List<Data> relationStrengthList) {
+                        List<Data> relationStrengthList,
+                        Map<Set<Data>, Double> relationPair) {
         this.numRelationsList = numRelationsList;
         this.averageRelationStrength = averageRelationStrength;
+        this.maxRelationStrength = maxRelationStrength;
         this.averageNumRelations = averageNumRelations;
         this.relationStrengthList = relationStrengthList;
+        this.relationPair = relationPair;
     }
 
     public List<Data> getNumRelationsList() {

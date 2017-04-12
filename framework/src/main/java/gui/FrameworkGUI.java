@@ -10,6 +10,8 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 /**
@@ -35,14 +37,12 @@ public class FrameworkGUI implements FrameworkListener{
     private final ButtonGroup nodeButtonGroup;
     private final ButtonGroup linkButtonGroup;
 
-
+    private final JLabel messageLabel;
     //Menu to choose which Data Visualization plugin to use.
     private final JMenu visualizationPluginMenu;
     //Button to switch between the analysis & visualization views.
     private JButton viewSwitchButton;
 
-    //The Top Panel that wraps all other JPanels.
-    private final JPanel topPanel;
 
     //The Panel from the Visualization plugin.
     private JPanel visualizationPanel;
@@ -70,13 +70,18 @@ public class FrameworkGUI implements FrameworkListener{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(1000, 1000));
 
-        JPanel emptyPanel = new JPanel();
         menuBar = new JMenuBar();
-        topPanel = new JPanel();
         analysisPanel = new JPanel();
-        topPanel.add(emptyPanel);
+        visualizationPanel = new JPanel();
+
+        //Set as a gridlayout so that the added panel will span the visualizationPanel
+        visualizationPanel.setLayout(new GridLayout(1, 1));
+
+        messageLabel = new JLabel();
 
         categoryMenu = new JMenu(CATEGORY_MENU_TITLE);
+        categoryMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+
         nodeMenu = new JMenu(NODE_MENU_TITLE);
         linkMenu = new JMenu(LINK_MENU_TITLE);
         nodeButtonGroup = new ButtonGroup();
@@ -89,7 +94,6 @@ public class FrameworkGUI implements FrameworkListener{
         dataPluginGroup = new ButtonGroup();
 
 
-        //topPanel.add(dataVisualizationPanel);
         fileMenu = new JMenu(FILE_MENU_TITLE);
         addFileMenu();
 
@@ -98,9 +102,13 @@ public class FrameworkGUI implements FrameworkListener{
         visualizationPluginMenu = new JMenu(MENU_SET_VISUALIZATION);
         addPluginMenus();
         menuBar.add(categoryMenu);
+        JPanel messagePanel = new JPanel();
+        messagePanel.add(messageLabel);
+        menuBar.add(messagePanel);
+
         addViewSwitchButton();
 
-        frame.add(topPanel);
+        frame.add(visualizationPanel);
         frame.setJMenuBar(menuBar);
         //frame.pack();
         frame.setVisible(true);
@@ -109,12 +117,7 @@ public class FrameworkGUI implements FrameworkListener{
     private void addPluginMenus() {
         dataPluginMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         visualizationPluginMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        if (dataPluginMenu.isSelected()) {
-            dataPluginMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-        }
-        if (visualizationPluginMenu.isSelected()) {
-            visualizationPluginMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-        }
+
         menuBar.add(dataPluginMenu);
         menuBar.add(visualizationPluginMenu);
     }
@@ -123,7 +126,39 @@ public class FrameworkGUI implements FrameworkListener{
         JMenuItem exitMenuItem = new JMenuItem(FILE_MENU_EXIT);
         JMenuItem startMenuItem = new JMenuItem(FILE_MENU_START);
         startMenuItem.addActionListener(event -> {
-            visualizationPanel = framework.getDataVisual();
+            String node = null;
+            String link = null;
+            for (Component c : linkMenu.getMenuComponents()) {
+                JRadioButtonMenuItem item = (JRadioButtonMenuItem)c;
+                if (item.isSelected()) {
+                    link = item.getText();
+                }
+            }
+
+            for (Component c : nodeMenu.getMenuComponents()) {
+                JRadioButtonMenuItem item = (JRadioButtonMenuItem)c;
+                if (item.isSelected()) {
+                    node = item.getText();
+                }
+            }
+
+            if (framework.getDataPlugin() == null) {
+                setMessageLabelText("You did not set a Data Plugin!");
+            }
+            else if (framework.getVisualPlugin() == null) {
+                setMessageLabelText("You did not set a Visual Plugin!");
+            }
+            else if (node == null) {
+                setMessageLabelText("You did not set a Data Category as the Node!");
+            }
+            else if (link == null) {
+                setMessageLabelText("You did not set a Data Category as the Link!");
+            }
+            else {
+                visualizationPanel.removeAll();
+                visualizationPanel.add(framework.getDataVisual(node, link));
+                visualizationPanel.revalidate();
+            }
                 });
         exitMenuItem.addActionListener(event -> System.exit(0));
         JMenuItem newFrameworkMenuItem = new JMenuItem(FILE_MENU_NEW);
@@ -133,15 +168,11 @@ public class FrameworkGUI implements FrameworkListener{
         fileMenu.addSeparator();
         fileMenu.add(exitMenuItem);
         fileMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        if (fileMenu.isSelected()) {
-            fileMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-        }
 
         menuBar.add(fileMenu);
     }
 
     private void addViewSwitchButton() {
-        JPanel blankPanel = new JPanel();
         try {
             viewSwitchButton = new JButton(new ImageIcon("src/main/resources/reverse.png"));
             viewSwitchButton.setBackground(Color.white);
@@ -151,20 +182,10 @@ public class FrameworkGUI implements FrameworkListener{
         }
         viewSwitchButton.setToolTipText("Switch View");
         viewSwitchButton.addActionListener(event -> {
-            for (Component c : topPanel.getComponents()) {
-                if (c == visualizationPanel) {
-                    topPanel.remove(visualizationPanel);
-                    topPanel.add(analysisPanel);
-                }
-                if (c == analysisPanel) {
-                    topPanel.remove(analysisPanel);
-                    topPanel.add(analysisPanel);
-                }
-            }
+
         });
 
         //To put viewSwitchButton on the very right of the MenuBar.
-        menuBar.add(blankPanel);
 
         menuBar.add(viewSwitchButton);
     }
@@ -190,28 +211,30 @@ public class FrameworkGUI implements FrameworkListener{
         menuItem.setToolTipText(dataPlugin.getDescription());
         menuItem.addActionListener(event -> {
             framework.setDataPlugin(dataPlugin);
+
+            nodeMenu.removeAll();
+            linkMenu.removeAll();
+            linkMenu.setEnabled(false);
+
             categoryMenu.setEnabled(true);
             for (String s : dataPlugin.getData().getManager().getCategorySet()) {
                 JRadioButtonMenuItem node = new JRadioButtonMenuItem(s);
                 JRadioButtonMenuItem link = new JRadioButtonMenuItem(s);
 
                 node.addActionListener(e -> {
-                    framework.setNode(s);
-                    for (Component c : linkMenu.getComponents()) {
-                        c.setEnabled(true);
+                    for (Component c : linkMenu.getMenuComponents()) {
+                        JRadioButtonMenuItem item = (JRadioButtonMenuItem)c;
+                        item.setEnabled(true);
                     }
+                    linkMenu.setEnabled(true);
+                    //Seems as though item.setSelection(false) isn't responding... So I did this instead.
+                    linkButtonGroup.clearSelection();
                     link.setEnabled(false);
                 });
+
                 nodeMenu.add(node);
                 nodeButtonGroup.add(node);
 
-                link.addActionListener(e -> {
-                    framework.setLink(s);
-                    for (Component c : nodeMenu.getComponents()) {
-                        c.setEnabled(true);
-                    }
-                    node.setEnabled(false);
-                });
                 linkMenu.add(link);
                 linkButtonGroup.add(link);
 
@@ -219,5 +242,18 @@ public class FrameworkGUI implements FrameworkListener{
         });
         dataPluginGroup.add(menuItem);
         dataPluginMenu.add(menuItem);
+    }
+
+
+    //Credit to Michal Ziober on StackOverflow.
+    private void setMessageLabelText(String text) {
+        messageLabel.setText(text);
+        Timer timer = new Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                messageLabel.setText("");
+            }
+        });
+        timer.start();
     }
 }

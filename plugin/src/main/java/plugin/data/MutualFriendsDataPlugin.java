@@ -63,7 +63,6 @@ public class MutualFriendsDataPlugin implements DataPlugin{
                 collection.addRelation("person", sArray[0], "friend", sArray[i]);
             }
         }
-        System.out.println(collection);
         return collection;
     }
 
