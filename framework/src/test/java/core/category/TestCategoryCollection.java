@@ -47,6 +47,8 @@ public class TestCategoryCollection {
     public void testGetRelationShipData2() {
         CategoryManager manager = new CategoryManager();
         CategoryCollection cc = new CategoryCollection(manager);
+        manager.registerCategory("A");
+        manager.registerCategory("B");
         cc.addData("A","A1");
         cc.addData("A","A2");
         cc.addData("A","A3");
