@@ -4,12 +4,17 @@ import core.category.Data;
 import core.data.AnalysisData;
 import core.data.RelationshipData;
 import core.plugin.VisualizationPlugin;
+import javafx.scene.chart.PieChart;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.Viewer;
+import org.knowm.xchart.PieChartBuilder;
+import org.knowm.xchart.PieSeries;
+import org.knowm.xchart.XChartPanel;
+import org.knowm.xchart.style.PieStyler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +32,15 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
     }
 
     @Override
+    public JPanel getVisual(RelationshipData relationshipData, AnalysisData analysisData) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(2,1));
+        panel.add(getVisualNodeLink(relationshipData,analysisData));
+        panel.add(getAnalysisPanel(relationshipData,analysisData));
+        return  panel;
+    }
+
+    @Override
     public String getName() {
         return "Node-Link";
     }
@@ -36,15 +50,15 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
         /* Do Nothing */
     }
 
-    @Override
-    public JPanel getVisual(RelationshipData relation, AnalysisData analysis) {
+
+    public JPanel getVisualNodeLink(RelationshipData relation, AnalysisData analysis) {
         Graph graph = new SingleGraph("nodeLinkGraph");
 
         String stylesheet = "edge {\n" +
                 "\tshape: line;\n" +
                 "\tfill-mode: dyn-plain;\n" +
-                "\tfill-color: white,yellow, red;\n" +
-                "\tarrow-size: 50px, 1px;\n" +
+                "\tfill-color: blue,green, red;\n" +
+                "\tsize: 3px;\n" +
                 "}";
 
         graph.setStrict(false);
@@ -72,10 +86,12 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
                 n1.setAttribute("ui.label",dc1.getName());
 
                 Edge e = graph.addEdge(dc0.toString()+dc1.toString(), dc0.toString(), dc1.toString());
+
                 try{
                     e.addAttribute("ui.color",strength);
+                    e.setAttribute("layout.force",0.001);
                 } catch (NullPointerException ne) {
-                    //
+                    /* do nothing since the edge has already been visited */
                 }
 
             }
@@ -87,6 +103,66 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
 
         return viewPanel;
     }
+
+    public JPanel getAnalysisPanel(RelationshipData relationshipData, AnalysisData analysisData) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(1,2));
+        panel.add(getStrengthDonutPanel(relationshipData,analysisData));
+        panel.add(getNumberDonutPanel(relationshipData,analysisData));
+        return panel;
+    }
+
+    public JPanel getStrengthDonutPanel(RelationshipData relationshipData, AnalysisData analysisData) {
+        org.knowm.xchart.PieChart chart = new PieChartBuilder().title("strength based").build();
+
+        chart.getStyler().setLegendVisible(false);
+        chart.getStyler().setAnnotationType(PieStyler.AnnotationType.Label);
+        chart.getStyler().setAnnotationDistance(.82);
+        chart.getStyler().setPlotContentSize(.9);
+        chart.getStyler().setDefaultSeriesRenderStyle(PieSeries.PieSeriesRenderStyle.Donut);
+
+        Map<Data,Map<Data,Double>> relationshipMap = relationshipData.getRelationshipMap();
+        for(Map.Entry<Data,Map<Data,Double>> entry : relationshipMap.entrySet()) {
+            String d = entry.getKey().getName();
+            Map<Data,Double> inMap = entry.getValue();
+            Double strengthTotal = 0.0;
+            for (Map.Entry<Data,Double> innerEntry:inMap.entrySet()) {
+                Double r = innerEntry.getValue();
+                strengthTotal += r;
+            }
+            chart.addSeries(d,strengthTotal);
+        }
+        JPanel panel = new XChartPanel(chart);
+        panel.validate();
+
+        return panel;
+    }
+
+    public JPanel getNumberDonutPanel(RelationshipData relationshipData, AnalysisData analysisData) {
+        org.knowm.xchart.PieChart chart = new PieChartBuilder().title("quantity based").build();
+
+        chart.getStyler().setLegendVisible(false);
+        chart.getStyler().setAnnotationType(PieStyler.AnnotationType.Label);
+        chart.getStyler().setAnnotationDistance(.82);
+        chart.getStyler().setPlotContentSize(.9);
+        chart.getStyler().setDefaultSeriesRenderStyle(PieSeries.PieSeriesRenderStyle.Donut);
+
+        Map<Data,Map<Data,Double>> relationshipMap = relationshipData.getRelationshipMap();
+
+        for(Map.Entry<Data,Map<Data,Double>> entry : relationshipMap.entrySet()) {
+            String d =entry.getKey().getName();
+            int r = entry.getValue().size();
+            chart.addSeries(d,r);
+        }
+        JPanel panel = new XChartPanel(chart);
+        panel.validate();
+
+        return panel;
+    }
+
+
+
+
 
     public static void main(String[] args) {
 
@@ -104,7 +180,7 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
 
         RelationshipData rd = new RelationshipData(keySet);
         rd.addLink(a1,a2,1.0);
-        rd.addLink(a1,a3,0.1);
+        rd.addLink(a1,a3,0.2);
 
 
         JFrame frame = new JFrame("in the plugin");
@@ -114,11 +190,17 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
 
         JPanel graphPanel = nv.getVisual(rd,null);
 
+//        JPanel graphPanel = nv.getStrengthDonutPanel(rd,null);
+
+//        JPanel graphPanel = nv.getNumberDonutPanel(rd,null);
+
+//        JPanel graphPanel = nv.getAnalysisPanel(rd,null);
+
         frame.add(graphPanel,BorderLayout.CENTER);
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        frame.setSize(320, 240);
+        frame.setSize(400, 800);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
