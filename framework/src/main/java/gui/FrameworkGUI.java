@@ -11,6 +11,7 @@ import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 
 /**
@@ -37,6 +38,7 @@ public class FrameworkGUI implements FrameworkListener{
 
     private final GUIStarter starter;
     //Menu that combines nodeMenu & linkMenu
+
     private final JMenu categoryMenu;
     //Menu of Data Categories
     private final JMenu nodeMenu;
@@ -46,6 +48,7 @@ public class FrameworkGUI implements FrameworkListener{
     private final JMenu fileMenu;
     //Menu to choose which Data plugin to use.
     private final JMenu dataPluginMenu;
+
     //Button Groups of different MenuItems. Used for clearing selection & being able to only select 1 at a time.
     private final ButtonGroup dataPluginGroup;
     private final ButtonGroup visualPluginGroup;
@@ -56,7 +59,6 @@ public class FrameworkGUI implements FrameworkListener{
     private final JLabel messageLabel;
     //Menu to choose which Data Visualization plugin to use.
     private final JMenu visualizationPluginMenu;
-
 
     //The Panel from the Visualization plugin.
     private JPanel visualizationPanel;
@@ -200,14 +202,47 @@ public class FrameworkGUI implements FrameworkListener{
         JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(dataPlugin.getName());
         menuItem.setToolTipText(dataPlugin.getDescription());
         menuItem.addActionListener(event -> {
-            framework.setDataPlugin(dataPlugin);
+            ArrayList<String> pluginInputs = new ArrayList<>();
+
+            if (dataPlugin.getNumInputs() > 0) {
+                JPanel panel = new JPanel();
+                panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+                ArrayList<JTextField> textFields = new ArrayList<>();
+                int counter = 0;
+                while (counter < dataPlugin.getNumInputs()) {
+                    JLabel label = new JLabel(dataPlugin.getInputDescription().get(counter));
+                    JTextField field = new JTextField(15);
+                    panel.add(label);
+                    panel.add(field);
+                    panel.add(new JSeparator());
+                    textFields.add(field);
+                    counter++;
+                }
+                int result = JOptionPane.showConfirmDialog(null, panel, "Plugin Inputs...",
+                        JOptionPane.OK_CANCEL_OPTION);
+                if (result == JOptionPane.OK_OPTION) {
+                    for (JTextField field : textFields) {
+                        pluginInputs.add(field.getText());
+                    }
+                }
+                else {//Cancel.
+                    dataPluginGroup.clearSelection();
+                    return;
+                }
+            }
+
+            framework.setDataPlugin(dataPlugin, pluginInputs);
+            if (framework.getCollection() == null) {
+                setMessageLabelText("Data Plugin initialization Error.");
+                return;
+            }
 
             nodeMenu.removeAll();
             linkMenu.removeAll();
             linkMenu.setEnabled(false);
 
             categoryMenu.setEnabled(true);
-            for (String s : dataPlugin.getData().getManager().getCategorySet()) {
+            for (String s : framework.getCollection().getManager().getCategorySet()) {
                 JRadioButtonMenuItem node = new JRadioButtonMenuItem(s);
                 JRadioButtonMenuItem link = new JRadioButtonMenuItem(s);
 
@@ -227,13 +262,18 @@ public class FrameworkGUI implements FrameworkListener{
 
                 linkMenu.add(link);
                 linkButtonGroup.add(link);
-
             }
         });
         dataPluginGroup.add(menuItem);
         dataPluginMenu.add(menuItem);
     }
 
+    @Override
+    public void onError(String errorMEssage) {
+        dataPluginGroup.clearSelection();
+        visualPluginGroup.clearSelection();
+        setMessageLabelText(errorMEssage);
+    }
 
     //Credit to Michal Ziober on StackOverflow.
     private void setMessageLabelText(String text) {

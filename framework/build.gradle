@@ -7,14 +7,23 @@ test.testLogging { exceptionFormat "full"; events "failed", "passed", "skipped" 
 
 apply plugin: 'maven'
 
-group = 'cs15214'
+group = 'cs214'
 
-version = '0.5.1'
+version = '1.0.0' //or any other version
+
+configurations {
+    deployerJars
+}
+
+dependencies {
+    deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
+}
 
 uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: "https://github.com/")
+    repositories.mavenDeployer {
+        configuration = configurations.deployerJars
+        repository(url: "scp://ckaestne-ftp.andrew.cmu.edu/var/www/webdav") {
+            authentication(userName: "students", password: mavenPassword)
         }
     }
 }
@@ -34,4 +43,4 @@ buildscript{
   }
 }
 
-mainClassName = "Main"
+mainClassName = "core.main.Main"

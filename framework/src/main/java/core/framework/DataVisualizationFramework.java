@@ -10,11 +10,12 @@ import core.plugin.DataPlugin;
 import core.plugin.VisualizationPlugin;
 
 import javax.swing.*;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.List;
 
 /**
- * The Main Framework Class. Deals with cross-communication between the two plugins via different data structures.
+ * The core.main.Main Framework Class. Deals with cross-communication between the two plugins via different data structures.
  * DataPlugin --> CategoryCollection/CategoryManager/Data | Framework
  * Framework ---> RelationshipData/AnalysisData           | VisualizationPlugin
  */
@@ -63,9 +64,16 @@ public class DataVisualizationFramework {
      * Sets the framework's dataPlugin. The framework can only handle one plugin of each type at a time.
      * @param plugin The data plugin
      */
-    public void setDataPlugin(DataPlugin plugin) {
+    public void setDataPlugin(DataPlugin plugin, ArrayList<String> pluginInputs) {
         this.dPlugin = plugin;
-        this.collection = plugin.getData();
+        try {
+            this.collection = plugin.getData(pluginInputs);
+        }
+        catch (RuntimeException e) {
+            e.printStackTrace();
+            listener.onError("The Data Plugin threw an Exception. Check your inputs?");
+            //^Hopefully it's the user's fault, not the plugin's fault.
+        }
     }
 
     /**
@@ -99,7 +107,21 @@ public class DataVisualizationFramework {
         RelationshipData relationData = calculateRelationData(dPlugin, node, link);
         AnalysisData analysisData = calculateAnalysisData(dPlugin, relationData);
         System.out.println(relationData);
-        return vPlugin.getVisual(relationData, analysisData);
+        try {
+            return vPlugin.getVisual(relationData, analysisData);
+        }
+        catch (RuntimeException e) {
+            listener.onError("Visual Plugin Returned an Exception!");
+        }
+        //Return blank JPanel.
+        return new JPanel();
+    }
+
+    /**
+     * @return The CategoryCollection returned by the most recent DataPlugin that was set to this framework.
+     */
+    public CategoryCollection getCollection() {
+        return this.collection;
     }
 
     //________________________________START OF ANALYSIS METHODS________________________________
@@ -200,7 +222,7 @@ public class DataVisualizationFramework {
     //________________________________END OF ANALYSIS METHODS________________________________
 
 
-    //________________________________START OF ANALYSIS METHODS________________________________
+    //________________________________START OF RELATIONSHIP METHODS________________________________
 
     /**
      * Calculates the RelationshipData based on an instance of Data owning different instances

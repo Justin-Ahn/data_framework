@@ -18,4 +18,10 @@ public interface FrameworkListener {
      * @param visualPlugin The plugin that is being registered.
      */
     void onVisualPluginRegistered(VisualizationPlugin visualPlugin);
+
+    /**
+     * Called when the Framework wants to propagate an error to its listener.
+     * @param errorMEssage The errorMessage that'll be sent to the listener.
+     */
+    void onError(String errorMEssage);
 }

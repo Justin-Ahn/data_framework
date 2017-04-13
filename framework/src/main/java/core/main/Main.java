@@ -1,3 +1,5 @@
+package core.main;
+
 import core.framework.DataVisualizationFramework;
 import core.plugin.DataPlugin;
 import core.plugin.VisualizationPlugin;
@@ -11,7 +13,7 @@ import java.net.URLClassLoader;
 import java.util.*;
 
 /**
- * The Main class that loads the plugins, creates the framework, and runs the GUI.
+ * The core.main.Main class that loads the plugins, creates the framework, and runs the GUI.
  */
 public class Main {
     private static URL[] findPluginJars() throws MalformedURLException {
