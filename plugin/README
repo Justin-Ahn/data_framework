@@ -2,7 +2,7 @@ Plugin Information:
 
 This is the flow of data seen by a typical process:
 
-Some Vague Data --A--> CategoryCollection --B--> RelationshipData|AnalysisData --C--> JPanel --D--> Visualization
+Some Vague Data --A--> CategoryCollection --B--> RelationshipData|AnalysisData --C--> JPanel --D--> Visual
 
 A: CategoryCollection compiled by Data Plugin
 B: Framework Uses Data Plugin's CategoryCollection to produce RelationshipData & AnalysisData
