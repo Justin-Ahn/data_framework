@@ -175,7 +175,6 @@ public class FrameworkGUI implements FrameworkListener{
         exitMenuItem.addActionListener(event -> System.exit(0));
         JMenuItem newFrameworkMenuItem = new JMenuItem(FILE_MENU_NEW);
         newFrameworkMenuItem.addActionListener(event -> {
-            starter.startFramework();
         });
         fileMenu.add(newFrameworkMenuItem);
         fileMenu.add(startMenuItem);
