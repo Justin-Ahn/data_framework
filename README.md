@@ -1,11 +1,10 @@
 This framework will take in data from different categories. 
-Two categories (category 1, category 2) will be chosen from these categories. 
-Relationship among members of category 1 will be calculated from the ownership relationship
-between the members of category 1 and members of category2. 
+Two arbitrary categories (category 1, category 2) will be chosen from those categories. 
+Relationship Strengths among members of category 1 will be calculated from the mutual ownership of members of category 2.
 The framework will then visualize and analyze the relationship among members of category 1. 
 
 We illustrate this point by an example. Suppose category 1 are songs, category 2 are people. 
-The data gotten from data plugin is parsed into the following data structure called CategoryCollection
+The data given from the data plugin is parsed into the following data structure called CategoryCollection
 ```
 {
   {Love the way you lie : <Justin, Tianyu, anonymous 214 TA> },
@@ -17,7 +16,7 @@ This means <Justin, Tianyu, anonymous 214 TA> likes the song Love the way you li
            <Justin, Tianyu> likes the song Sing for the moment and
            <Christian, Bogdan> likes the song Yesterday once more.
 
-From this representation of ownership relationship (the song owns its likers), we can 
+From this representation of ownership (the song owns its likers), we can 
 tell that Love the way you lie is more closely related to Sing for the moment instead of Yesterday once more
 because Love the way you lie and Sing for the moment have similar group of people liking it, i.e. <Justin, Tianyu>. 
 
@@ -31,7 +30,7 @@ following form of relationship:
             /		          \	
 Sing for the moment -- 0.0 --   Yesterday once more
 ```
-The edges are marked with numbers which mean the strength of the connections
+The edges are marked with numbers which signify the strength of the connections
 
 Internally, this is represented as a double map, i.e
 ```
@@ -43,9 +42,9 @@ Internally, this is represented as a double map, i.e
 ```
 The data structure that holds the double map is called RelationshipData.
 
-Note we omit the connection if the strength of that connection is 0.0.
+Note we omit the connection if the strength of that connection is 0.0. (Connection is nonexistent)
 
-This RelationshipData is then passed to the visualization plugin to be plotted
+This RelationshipData is then passed to the visualization plugin to be plotted.
 
 An important notice is that we are not limiting the song to be category 1. 
 We can also pick people to be category 1. By doing this, the CategoryCollection data structure will look like this
