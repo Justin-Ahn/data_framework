@@ -1,0 +1,25 @@
+Plugin Information:
+
+This is the flow of data seen by a typical process:
+
+Some Vague Data --A--> CategoryCollection --B--> RelationshipData|AnalysisData --C--> JPanel --D--> Visual
+
+A: CategoryCollection compiled by Data Plugin
+B: Framework Uses Data Plugin's CategoryCollection to produce RelationshipData & AnalysisData
+C: Visualization Plugin takes in RelationshipData and AnalysisData to create a JPanel
+D: The FrameworkGUI displays the JPanel given by the VisualPlugin.
+
+------------------------------------------------------------------------------------------------------
+
+A Quick Data Plugin Guide:
+1) Get the Data from whatever data source you need (Web, csv, image, etc.)
+2) Register each category of Data to the CategoryManager
+3) Add all Data points to the CategoryCollections. 
+4) Create a relation between two Data points after the addition of all Data points.
+5) Fill out all the other methods that needs implementation accordingly. (There should be enough documentation for you to figure it out)
+
+
+
+
+
+
