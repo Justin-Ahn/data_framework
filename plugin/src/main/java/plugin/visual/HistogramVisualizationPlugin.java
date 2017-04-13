@@ -16,7 +16,8 @@ import java.util.List;
 
 /**
  * take in relationship data and analysis data
- * plot the number of connections of each instance in a histogram
+ * plot the number of connections of each instance data in a histogram
+ * this plugin ignores the data from the AnalysisData
  */
 public class HistogramVisualizationPlugin implements VisualizationPlugin {
     @Override
@@ -35,7 +36,10 @@ public class HistogramVisualizationPlugin implements VisualizationPlugin {
     }
 
     /**
-     *
+     * getVisual iterate through the relationshipMap and compute the 
+     * number of connections each instance of data has. It then plot the histogram
+     * of instance of data vs number of connections that instance has.
+     * The histogram plot is generated using the module XChart
      * @param relation the relationship data to be visualized
      * @param analysis the analysis data to be visualized
      * @return JPanel instance with the figure inside
