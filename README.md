@@ -84,7 +84,7 @@ The songs and the people internally have the type Data. The program will be able
 distinguish a song from a person because each instance of a Data will remember the
 actual type and name of that specific instance.
 
-
+To view a tutorial/guide on implementing/using the Plugins, see the README on the Plugins project.
 
 
 
