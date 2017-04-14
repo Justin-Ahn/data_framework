@@ -14,7 +14,7 @@ Some examples could be:
 Some tangible examples are...<br />
 Something like this: http://www.jacobsilterra.com/subreddit_map/network/index.html
 
-or this: <br /> ![alt tag](http://www.seilevel.com/requirements/wp-content/uploads/2015/02/1-Alluvial-Diagram-Ex..png)
+or this: <br /> ![alt tag](https://pbs.twimg.com/media/B8maLBaIAAEVM9S.png:large)
 
 There are also other types of more basic statistical analyses you can do with the framework, since it provides additional analyses
 of the relationship data as well as providing the relationship data.
