@@ -6,7 +6,9 @@ to calculate the strength.
 The end goal of the tool is to analyze relationships and maybe even discover new, unexpected relations between objects.
 
 Something like this: http://www.jacobsilterra.com/subreddit_map/network/index.html
-and this: ![alt tag](http://www.seilevel.com/requirements/wp-content/uploads/2015/02/1-Alluvial-Diagram-Ex..png)
+
+or this: ![alt tag](http://www.seilevel.com/requirements/wp-content/uploads/2015/02/1-Alluvial-Diagram-Ex..png)
+
 There are also other types of more basic statistical analyses you can do with the framework, since it provides additional analyses
 of the relationship data as well as providing the relationship data.
 
@@ -121,7 +123,9 @@ distinguish a song from a person because each instance of a Data will remember t
 actual type and name of that specific instance.
 
 ## Notes
+
 To view a tutorial/guide on implementing/using the Plugins, see the README on the Plugins project.
+
 To view a guide on how to navigate the GUI, see the README on the Framework project.
 
 
