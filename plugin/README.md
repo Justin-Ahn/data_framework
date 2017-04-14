@@ -4,10 +4,10 @@ This is the flow of data seen by a typical process:
 
 Vague Data --A--> CategoryCollection --B--> RelationshipData|AnalysisData --C--> JPanel --D--> GUI Visual
 
-A: CategoryCollection compiled by Data Plugin
-B: Framework Uses Data Plugin's CategoryCollection to produce RelationshipData & AnalysisData
-C: Visualization Plugin takes in RelationshipData and AnalysisData to create a JPanel
-D: The FrameworkGUI displays the JPanel given by the VisualPlugin.
+A: CategoryCollection compiled by Data Plugin<br />
+B: Framework Uses Data Plugin's CategoryCollection to produce RelationshipData & AnalysisData<br />
+C: Visualization Plugin takes in RelationshipData and AnalysisData to create a JPanel<br />
+D: The FrameworkGUI displays the JPanel given by the VisualPlugin.<br />
 
 ------------------------------------------------------------------------------------------------------
 
