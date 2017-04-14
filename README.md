@@ -1,3 +1,56 @@
+# Relationship Analysis Framework <br /> (Team35 - Justin Ahn, Tianyu Gu)
+
+## Project Goals
+Analyze the relationship strength between two different data objects, using mutual ownership of other data objects 
+to calculate the strength.
+The end goal of the tool is to analyze relationships and maybe even discover new, unexpected relations between objects.
+Some examples could be: 
+* Comparing Subreddits
+* Comparing Cities
+* Comparing People
+* Comparing anything with a defining characteristic
+* Other things that we haven't thought of but are still cool
+
+Some tangible examples are...<br />
+Something like this: http://www.jacobsilterra.com/subreddit_map/network/index.html
+
+or this: <br /> ![alt tag](http://www.seilevel.com/requirements/wp-content/uploads/2015/02/1-Alluvial-Diagram-Ex..png)
+
+There are also other types of more basic statistical analyses you can do with the framework, since it provides additional analyses
+of the relationship data as well as providing the relationship data.
+
+## Building/Using the Example Plugins
+Download the Plugin project (hw5-team-35/plugin) and run 'gradle run' on terminal inside the plugin project directory. Done!
+
+## Installation Guide
+Add this to your gradle.build on your Plugin project:
+```
+  repositories {
+      mavenCentral()
+      maven {
+          url "http://ckaestne-ftp.andrew.cmu.edu/webdav/"
+      }
+  }
+
+  dependencies {
+      compile group: "cs214", name: "<name>", version: '<version>'
+  }
+  
+  mainClassName = "core.main.Main"
+```
+Have two META-INF/services files:
+<br />META-INF/services/core.plugin.DataPlugin
+<br />META-INF/services/core.plugin.VisualizationPlugin
+<br />And list your plugins in each respective service file.
+'gradle run' should then fetch the framework & run the framework with your Plugins.
+
+To add the framework dependency to Intellij without a .jar file of the project, add:
+```
+apply plugin: 'idea'
+```
+and run 'gradle idea'. There are other ways to do this as well.
+
+## Framework Description & Details
 This framework will take in data from different categories. 
 Two arbitrary categories (category 1, category 2) will be chosen from those categories. 
 Relationship Strengths among members of category 1 will be calculated from the mutual ownership of members of category 2.
@@ -84,7 +137,11 @@ The songs and the people internally have the type Data. The program will be able
 distinguish a song from a person because each instance of a Data will remember the
 actual type and name of that specific instance.
 
+## Notes
+
 To view a tutorial/guide on implementing/using the Plugins, see the README on the Plugins project.
+
+To view a guide on how to navigate the GUI, see the README on the Framework project.
 
 
 
