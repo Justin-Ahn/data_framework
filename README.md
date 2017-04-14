@@ -11,7 +11,7 @@ Some examples could be:
 * Comparing anything with a defining characteristic
 * Other things that we haven't thought of but are still cool
 
-Some tangible examples are...
+Some tangible examples are...<br />
 Something like this: http://www.jacobsilterra.com/subreddit_map/network/index.html
 
 or this: <br /> ![alt tag](http://www.seilevel.com/requirements/wp-content/uploads/2015/02/1-Alluvial-Diagram-Ex..png)
@@ -40,7 +40,14 @@ Have two META-INF/services files:
 <br />META-INF/services/core.plugin.VisualizationPlugin
 <br />And list your plugins in each respective service file.
 
-Gradle run should then fetch the framework & run the framework with your Plugins.
+'gradle run' should then fetch the framework & run the framework with your Plugins.
+
+To add the framework dependency to Intellij without a .jar file of the project, add:
+```
+apply plugin: 'idea'
+```
+<br />and run 'gradle idea'. There are other ways to do this as well.
+
 
 ## Framework Description & Details
 This framework will take in data from different categories. 
