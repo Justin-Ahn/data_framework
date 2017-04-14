@@ -1,5 +1,5 @@
 # A Little Tutorial on the GUI
-
+```
 ----Frame------------------------------------------------------------------------
 File  DataPlugin VisualPlugin DataCategory                                      |
                                                                                 |
@@ -13,7 +13,7 @@ File  DataPlugin VisualPlugin DataCategory                                      
                                                                                 |
                                                                                 |
                                                                                 |
----------------------------------------------------------------------------------                                                                               
+---------------------------------------------------------------------------------                                                           ```                  
 
 The Menu contains Four submenus - File, DataPlugin, VisualPlugin, and DataCategory.
 
