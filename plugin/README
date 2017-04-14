@@ -1,4 +1,4 @@
-# Plugin Information:
+# Plugin Information
 
 This is the flow of data seen by a typical process:
 
@@ -11,7 +11,7 @@ D: The FrameworkGUI displays the JPanel given by the VisualPlugin.
 
 ------------------------------------------------------------------------------------------------------
 
-# A Quick Data Plugin Guide:
+# A Quick Data Plugin Guide
 1) Get the Data from whatever data source you need (Web, csv, image, etc.)
 2) Register each category of Data to the CategoryManager
 3) Add all Data points to the CategoryCollections. 
@@ -20,7 +20,7 @@ D: The FrameworkGUI displays the JPanel given by the VisualPlugin.
 
 
 
-# A Quick Visualization Guide:
+# A Quick Visualization Guide
 1) There are two data structures passed to the getVisual method: relation: RelationshipData and analysis: AnalysisData.
 2) The RelationshipData contains the relationship map which can be obtained by calling relation.getRelationshipMap()
    The return type will be Map<Data,Map<Data,Double>>
