@@ -1,18 +1,18 @@
 # A Little Tutorial on the GUI
 ```
 ----Frame------------------------------------------------------------------------
-File  DataPlugin VisualPlugin DataCategory                                      |
-                                                                                |
-                                                                                |                                      
-                                                                                |
-                                                                                |
-                               __VISUAL__                                       |
-                                                                                |
-                                                                                |
-                                                                                |
-                                                                                |
-                                                                                |
-                                                                                |
+|File  DataPlugin VisualPlugin DataCategory                                      |
+|                                                                                |
+|                                                                                |                                      
+|                                                                                |
+|                                                                                |
+|                               __VISUAL__                                       |
+|                                                                                |
+|                                                                                |
+|                                                                                |
+|                                                                                |
+|                                                                                |
+|                                                                                |
 ---------------------------------------------------------------------------------                                                          
 ```
 
