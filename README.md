@@ -39,14 +39,13 @@ Have two META-INF/services files:
 <br />META-INF/services/core.plugin.DataPlugin
 <br />META-INF/services/core.plugin.VisualizationPlugin
 <br />And list your plugins in each respective service file.
-
 'gradle run' should then fetch the framework & run the framework with your Plugins.
 
 To add the framework dependency to Intellij without a .jar file of the project, add:
 ```
 apply plugin: 'idea'
 ```
-<br />and run 'gradle idea'. There are other ways to do this as well.
+and run 'gradle idea'. There are other ways to do this as well.
 
 
 ## Framework Description & Details
