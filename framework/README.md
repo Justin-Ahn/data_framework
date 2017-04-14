@@ -13,9 +13,11 @@ File  DataPlugin VisualPlugin DataCategory                                      
                                                                                 |
                                                                                 |
                                                                                 |
----------------------------------------------------------------------------------                                                           ```                  
+---------------------------------------------------------------------------------                                                          
+```
 
 The Menu contains Four submenus - File, DataPlugin, VisualPlugin, and DataCategory.
+
 
 1) We must explicitly choose which plugins to run through the framework to see the visualizataion.
 Lets choose a DataPlugin first:
