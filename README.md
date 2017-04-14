@@ -20,9 +20,7 @@ There are also other types of more basic statistical analyses you can do with th
 of the relationship data as well as providing the relationship data.
 
 ## Building/Using the Example Plugins
-Download the Plugin project (hw5-team-35/plugin)
-run 'gradle run' on terminal inside the plugin project.
-Done!
+Download the Plugin project (hw5-team-35/plugin) and run 'gradle run' on terminal inside the plugin project directory. Done!
 
 ## Installation Guide
 Add this to your gradle.build on your Plugin project:
