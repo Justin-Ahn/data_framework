@@ -1,4 +1,4 @@
-# Relationship Analysis Framework (Team35 - Justin Ahn, Tianyu Gu)
+# Relationship Analysis Framework <br /> (Team35 - Justin Ahn, Tianyu Gu)
 
 ## Project Goals
 Analyze the relationship strength between two different data objects, using mutual ownership of other data objects 
@@ -7,7 +7,7 @@ The end goal of the tool is to analyze relationships and maybe even discover new
 
 Something like this: http://www.jacobsilterra.com/subreddit_map/network/index.html
 
-or this: ![alt tag](http://www.seilevel.com/requirements/wp-content/uploads/2015/02/1-Alluvial-Diagram-Ex..png)
+or this: <br /> ![alt tag](http://www.seilevel.com/requirements/wp-content/uploads/2015/02/1-Alluvial-Diagram-Ex..png)
 
 There are also other types of more basic statistical analyses you can do with the framework, since it provides additional analyses
 of the relationship data as well as providing the relationship data.
