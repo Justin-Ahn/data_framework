@@ -65,16 +65,16 @@ The data given from the data plugin is parsed into the following data structure 
   {Yesterday once more: <Christian, Bogdan>}
 }
 ```
-This means <Justin, Tianyu, anonymous 214 TA> likes the song Love the way you lie, 
-           <Justin, Tianyu> likes the song Sing for the moment and
-           <Christian, Bogdan> likes the song Yesterday once more.
+This means <Justin, Tianyu, anonymous 214 TA> like the song Love the way you lie, 
+           <Justin, Tianyu> like the song Sing for the moment and
+           <Christian, Bogdan> like the song Yesterday once more.
 
 From this representation of ownership (the song owns its likers), we can 
-tell that Love the way you lie is more closely related to Sing for the moment instead of Yesterday once more
-because Love the way you lie and Sing for the moment have similar group of people liking it, i.e. <Justin, Tianyu>. 
+tell that "Love the way you lie" is closely related to "Sing for the moment", while "Yesterday once more" is not related either songs 
+because "Love the way you lie" and "Sing for the moment" have a group of people liking both. <Justin, Tianyu>, whil
 
 Based on the ownership relationships, this framework quantifies the 
-relationship strength among the members of category 1(i.e. the songs) and produce the 
+relationship strength among the members of category 1(i.e. the songs) and produces the 
 following form of relationship:
 ```
              Love the way you lie
@@ -133,9 +133,9 @@ actually look like this:
   {Bogdan : <Yesterday once more>}
 }
 ```
-The songs and the people internally have the type Data. The program will be able to 
-distinguish a song from a person because each instance of a Data will remember the
-actual type and name of that specific instance.
+The songs and the people internally have different types (probably 'song', and 'person'). The program will be able to 
+distinguish a song from a person because each instance of Data will remember the
+type and name of that specific instance.
 
 ## Plugin Information
 
