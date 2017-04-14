@@ -19,6 +19,11 @@ or this: <br /> ![alt tag](http://www.seilevel.com/requirements/wp-content/uploa
 There are also other types of more basic statistical analyses you can do with the framework, since it provides additional analyses
 of the relationship data as well as providing the relationship data.
 
+## Building/Using the Example Plugins
+Download the Plugin project (hw5-team-35/plugin)
+run 'gradle run' on terminal inside the plugin project.
+Done!
+
 ## Installation Guide
 Add this to your gradle.build on your Plugin project:
 ```
@@ -46,7 +51,6 @@ To add the framework dependency to Intellij without a .jar file of the project, 
 apply plugin: 'idea'
 ```
 and run 'gradle idea'. There are other ways to do this as well.
-
 
 ## Framework Description & Details
 This framework will take in data from different categories. 
