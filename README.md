@@ -218,26 +218,3 @@ Lets choose a DataPlugin first:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
