@@ -4,7 +4,14 @@
 Analyze the relationship strength between two different data objects, using mutual ownership of other data objects 
 to calculate the strength.
 The end goal of the tool is to analyze relationships and maybe even discover new, unexpected relations between objects.
+Some examples could be: 
+* Comparing Subreddits
+* Comparing Cities
+* Comparing People
+* Comparing anything with a defining characteristic
+* Other things that we haven't thought of but are still cool
 
+Some tangible examples are...
 Something like this: http://www.jacobsilterra.com/subreddit_map/network/index.html
 
 or this: <br /> ![alt tag](http://www.seilevel.com/requirements/wp-content/uploads/2015/02/1-Alluvial-Diagram-Ex..png)
@@ -29,9 +36,9 @@ Add this to your gradle.build on your Plugin project:
   mainClassName = "core.main.Main"
 ```
 Have two META-INF/services files:
-META-INF/services/core.plugin.DataPlugin
-META-INF/services/core.plugin.VisualizationPlugin
-And list your plugins in each respective service file.
+<br />META-INF/services/core.plugin.DataPlugin
+<br />META-INF/services/core.plugin.VisualizationPlugin
+<br />And list your plugins in each respective service file.
 
 Gradle run should then fetch the framework & run the framework with your Plugins.
 
