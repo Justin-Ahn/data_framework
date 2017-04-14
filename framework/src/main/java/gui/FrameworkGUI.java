@@ -29,7 +29,6 @@ import java.util.ArrayList;
  * Unable to use multithreading in time to still have a responsive GUI during the loading time, unfortunately.
  */
 public class FrameworkGUI implements FrameworkListener{
-
     //The GUI's Frame
     private final JFrame frame;
 
@@ -74,7 +73,7 @@ public class FrameworkGUI implements FrameworkListener{
     private static final String FILE_MENU_EXIT = "Exit";
     private static final String FILE_MENU_START = "Apply Plugins...";
     private static final String MENU_SET_DATA = "Data plugin";
-    private static final String MENU_SET_VISUALIZATION = "Visualization plugin";
+    private static final String MENU_SET_VISUALIZATION = "Visual plugin";
 
     public FrameworkGUI(DataVisualizationFramework framework, GUIStarter starter) {
         this.framework = framework;
@@ -175,6 +174,7 @@ public class FrameworkGUI implements FrameworkListener{
         exitMenuItem.addActionListener(event -> System.exit(0));
         JMenuItem newFrameworkMenuItem = new JMenuItem(FILE_MENU_NEW);
         newFrameworkMenuItem.addActionListener(event -> {
+            starter.startFramework();
         });
         fileMenu.add(newFrameworkMenuItem);
         fileMenu.add(startMenuItem);
@@ -231,16 +231,15 @@ public class FrameworkGUI implements FrameworkListener{
             }
 
             framework.setDataPlugin(dataPlugin, pluginInputs);
-            if (framework.getCollection() == null) {
-                setMessageLabelText("Data Plugin initialization Error.");
-                return;
-            }
 
             nodeMenu.removeAll();
             linkMenu.removeAll();
             linkMenu.setEnabled(false);
 
             categoryMenu.setEnabled(true);
+            if (framework.getCollection() == null) {
+                return;
+            }
             for (String s : framework.getCollection().getManager().getCategorySet()) {
                 JRadioButtonMenuItem node = new JRadioButtonMenuItem(s);
                 JRadioButtonMenuItem link = new JRadioButtonMenuItem(s);

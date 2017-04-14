@@ -106,7 +106,6 @@ public class DataVisualizationFramework {
 
         RelationshipData relationData = calculateRelationData(dPlugin, node, link);
         AnalysisData analysisData = calculateAnalysisData(dPlugin, relationData);
-        System.out.println(relationData);
         try {
             return vPlugin.getVisual(relationData, analysisData);
         }
