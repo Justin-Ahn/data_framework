@@ -9,15 +9,29 @@ B: Framework Uses Data Plugin's CategoryCollection to produce RelationshipData &
 C: Visualization Plugin takes in RelationshipData and AnalysisData to create a JPanel<br />
 D: The FrameworkGUI displays the JPanel given by the VisualPlugin.<br />
 
-------------------------------------------------------------------------------------------------------
+# Data Plugin API
+* String getName() <br/>
+The name of the data plugin. (A couple of words)
+* String getDescription() <br/>
+The description of the data plugin. (1 sentence)
+* boolean cacheEnabled() <br/>
+Enable the cache for faster calculations.
+* void onRegister() <br/>
+Run any needed startup code when the plugin is registered.
+* int getNumInputs() <br/>
+The number of inputs the plugin needs.
+* ArrayList<String> getInputDescription(); <br/>
+The description of each input the plugin needs.
+* CategoryCollection getData(List<String> inputs); <br/>
+The data structure for the framework's usage compiled by the plugin.
+
 
 # A Quick Data Plugin Guide
 1) Get the Data from whatever data source you need (Web, csv, image, etc.)
 2) Register each category of Data to the CategoryManager
 3) Add all Data points to the CategoryCollections. 
 4) Create a relation between two Data points after the addition of all Data points.
-5) Fill out all the other methods that needs implementation accordingly. (There should be enough documentation for you to figure it out)
-
+5) Fill out all the other methods that needs implementation accordingly. 
 
 
 # A Quick Visualization Guide
