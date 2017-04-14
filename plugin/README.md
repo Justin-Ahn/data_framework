@@ -1,4 +1,4 @@
-# Plugin Information
+## Plugin Information
 
 This is the flow of data seen by a typical process:
 
@@ -9,7 +9,7 @@ B: Framework Uses Data Plugin's CategoryCollection to produce RelationshipData &
 C: Visualization Plugin takes in RelationshipData and AnalysisData to create a JPanel<br />
 D: The FrameworkGUI displays the JPanel given by the VisualPlugin.<br />
 
-# Data Plugin API
+## Data Plugin API
 * String getName() <br/>
 The name of the data plugin. (A couple of words)
 * String getDescription() <br/>
@@ -26,7 +26,7 @@ The description of each input the plugin needs.
 The data structure for the framework's usage compiled by the plugin.
 
 
-# A Quick Data Plugin Guide
+## A Quick Data Plugin Guide
 1) Get the Data from whatever data source you need (Web, csv, image, etc.)
 2) Register each category of Data to the CategoryManager
 3) Add all Data points to the CategoryCollections. 
@@ -34,7 +34,7 @@ The data structure for the framework's usage compiled by the plugin.
 5) Fill out all the other methods that needs implementation accordingly. 
 
 
-# A Quick Visualization Guide
+## A Quick Visualization Guide
 1) There are two data structures passed to the getVisual method: relation: RelationshipData and analysis: AnalysisData.
 2) The RelationshipData contains the relationship map which can be obtained by calling relation.getRelationshipMap()
    The return type will be Map<Data,Map<Data,Double>>
