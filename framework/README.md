@@ -1,4 +1,4 @@
-A Little Tutorial on the GUI:
+# A Little Tutorial on the GUI
 
 ----Frame------------------------------------------------------------------------
 File  DataPlugin VisualPlugin DataCategory                                      |
