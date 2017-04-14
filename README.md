@@ -16,8 +16,7 @@ Something like this: http://www.jacobsilterra.com/subreddit_map/network/index.ht
 
 or this: <br /> ![alt tag](https://pbs.twimg.com/media/B8maLBaIAAEVM9S.png:large)
 
-There are also other types of more basic statistical analyses you can do with the framework, since it provides additional analyses
-of the relationship data as well as providing the relationship data.
+There are also other types of data visualizations you can do with the framework, since it provides not only the relationship data but also additional analyses of the relationship data. 
 
 ## Building/Using the Example Plugins
 Download the Plugin project (hw5-team-35/plugin) and run 'gradle run' on terminal inside the plugin project directory. Done!
