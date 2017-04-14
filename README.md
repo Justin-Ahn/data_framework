@@ -7,6 +7,31 @@ The end goal of the tool is to analyze relationships and maybe even discover new
 
 Something like this: http://www.jacobsilterra.com/subreddit_map/network/index.html
 and this: ![alt tag](http://www.seilevel.com/requirements/wp-content/uploads/2015/02/1-Alluvial-Diagram-Ex..png)
+There are also other types of more basic statistical analyses you can do with the framework, since it provides additional analyses
+of the relationship data as well as providing the relationship data.
+
+## Installation Guide
+Add this to your gradle.build on your Plugin project:
+```
+  repositories {
+      mavenCentral()
+      maven {
+          url "http://ckaestne-ftp.andrew.cmu.edu/webdav/"
+      }
+  }
+
+  dependencies {
+      compile group: "cs214", name: "<name>", version: '<version>'
+  }
+  
+  mainClassName = "core.main.Main"
+```
+Have two META-INF/services files:
+META-INF/services/core.plugin.DataPlugin
+META-INF/services/core.plugin.VisualizationPlugin
+And list your plugins in each respective service file.
+
+Gradle run should then fetch the framework & run the framework with your Plugins.
 
 ## Framework Description & Details
 This framework will take in data from different categories. 
@@ -95,41 +120,9 @@ The songs and the people internally have the type Data. The program will be able
 distinguish a song from a person because each instance of a Data will remember the
 actual type and name of that specific instance.
 
-## A Little Tutorial on the GUI
-
-|----Frame------------------------------------------------------------------------
-|File  DataPlugin VisualPlugin DataCategory                                      |
-|                                                                                |
-|                                                                                |                                      
-|                                                                                |
-|                                                                                |
-|                               __VISUAL__                                       |
-|                                                                                |
-|                                                                                |
-|                                                                                |
-|                                                                                |
-|                                                                                |
-|                                                                                |
-|---------------------------------------------------------------------------------                                                                               
-
-The Menu contains Four submenus - File, DataPlugin, VisualPlugin, and DataCategory.
-
-1) We must explicitly choose which plugins to run through the framework to see the visualizataion.
-Lets choose a DataPlugin first:
-2) Some Data Plugins need some user inputs. The GUI will request those inputs on behalf on the Plugin when you select them.
-3) Some Data Plugins need a lot of time to initialize. The GUI may become unresponsive for a couple seconds after the selection.
-4) The DataCategory menu will be enabled after you select a DataPlugin. The DataCategory menu will enable you to choose which
-    two data categories you want to select as the Node and the Link. You cannot select one category for both the Link and Node. However
-    you can choose any two arbitrary categories as a Node and a Link. 
-    
-5) Choose a VisualPlugin to render the data from the DataPlugin with. 
-6) Select "Apply Plugin" on the File Menu. You will then be able to visualize the data.
-
-
-
-
 ## Notes
 To view a tutorial/guide on implementing/using the Plugins, see the README on the Plugins project.
+To view a guide on how to navigate the GUI, see the README on the Framework project.
 
 
 
