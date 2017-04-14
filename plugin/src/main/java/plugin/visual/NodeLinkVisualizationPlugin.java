@@ -70,7 +70,7 @@ public class NodeLinkVisualizationPlugin implements VisualizationPlugin {
         Graph graph = new SingleGraph("nodeLinkGraph");
 
         String stylesheet = "node {\n" +
-                "\tsize: 3px;\n" +
+                "\tsize: 10px;\n" +
                 "\tfill-color: #777;\n" +
                 "}\n" +
                 "edge {\n" +

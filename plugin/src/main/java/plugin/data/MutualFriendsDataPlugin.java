@@ -6,6 +6,8 @@ import core.plugin.DataPlugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -14,10 +16,12 @@ import java.util.Scanner;
  * Justin A = knows Tianyu G
  * Tianyu G = knows Justin Ahn
  * Christian K = doesn't know either Tianyu G or Justin Ahn.
+ *
+ * File Location -> src/main/resources/friends.csv
  */
 public class MutualFriendsDataPlugin implements DataPlugin{
-    private static final String FILE_LOCATION = "src/main/resources/friends.csv";
     private File f;
+
     private Scanner scan;
 
     @Override
@@ -35,7 +39,16 @@ public class MutualFriendsDataPlugin implements DataPlugin{
         /* Do Nothing */
     }
 
-    public MutualFriendsDataPlugin() {
+    @Override
+    public int getNumInputs() {
+        return 1;
+    }
+
+    @Override
+    public ArrayList<String> getInputDescription() {
+        ArrayList<String> descriptions = new ArrayList<>();
+        descriptions.add("Path to the .csv File. (src/main/resources/friends.csv)");
+        return descriptions;
     }
 
     @Override
@@ -48,9 +61,9 @@ public class MutualFriendsDataPlugin implements DataPlugin{
      * @return The CategoryCollection of the Data that we got from the .csv file.
      */
     @Override
-    public CategoryCollection getData() {
+    public CategoryCollection getData(List<String> inputs) {
         try {
-            f = new File(FILE_LOCATION);
+            f = new File(inputs.get(0));
             scan = new Scanner(f);
         }
         catch (FileNotFoundException e) {
