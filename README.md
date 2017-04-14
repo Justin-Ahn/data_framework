@@ -65,9 +65,9 @@ The data given from the data plugin is parsed into the following data structure 
   {Yesterday once more: <Christian, Bogdan>}
 }
 ```
-This means <Justin, Tianyu, anonymous 214 TA> like the song Love the way you lie, 
-           <Justin, Tianyu> like the song Sing for the moment and
-           <Christian, Bogdan> like the song Yesterday once more.
+This means <Justin, Tianyu, anonymous 214 TA> like the song "Love the way you lie", 
+           <Justin, Tianyu> like the song "Sing for the moment" and
+           <Christian, Bogdan> like the song "Yesterday once more".
 
 From this representation of ownership (the song owns its likers), we can 
 tell that "Love the way you lie" is closely related to "Sing for the moment", while "Yesterday once more" is not related either songs 
