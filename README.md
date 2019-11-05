@@ -1,5 +1,6 @@
 # Relationship Analysis Framework <br /> (Team35 - Justin Ahn, Tianyu Gu)
 
+# This project was selected as one of 3 "Best Frameworks" in 15-214! :)
 ## Project Goals
 Analyze the relationship strength between two different data objects, using mutual ownership of other data objects 
 to calculate the strength.
